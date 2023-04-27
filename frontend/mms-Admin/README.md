@@ -57,6 +57,6 @@ npm install @openapitools/openapi-generator-cli -g
 To generate openApi library, run the following command
 
 ```
-openapi-generator-cli generate -g typescript-axios --additional-properties=prependFormOrBodyParameters=true -o lib/httpClient -i swagger.yaml --skip-validate-spec
+openapi-generator-cli generate -g typescript-axios --additional-properties=prependFormOrBodyParameters=true -o lib/httpGen -i swagger.yaml --skip-validate-spec
 
 ```

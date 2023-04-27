@@ -21,14 +21,17 @@
     "daisyui": "^2.51.5",
     "eslint": "8.37.0",
     "eslint-config-next": "13.3.0",
+    "formik": "^2.2.9",
     "next": "13.3.0",
     "postcss": "8.4.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-feather": "^2.0.10",
+    "react-query": "^3.39.3",
     "swr": "^2.1.5",
     "tailwindcss": "3.3.1",
-    "typescript": "5.0.3"
+    "typescript": "5.0.3",
+    "yup": "^1.1.1"
   },
   "eslintConfig": {
     "rules": {

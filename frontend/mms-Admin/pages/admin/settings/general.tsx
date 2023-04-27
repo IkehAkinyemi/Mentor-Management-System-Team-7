@@ -2,14 +2,13 @@ import { Button, InputField, SelectField, TextareaField } from "@/components";
 import Input from "@/components/InputFields";
 import SettingsLayout from "@/components/Settings/SettingsLayout";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
-import { API_URL } from "@/lib/constant";
-import { httpClient } from "@/lib/httpClient";
-import { DefaultApi } from "@/lib/httpGen";
+
 import { avatarIcon } from "@/public";
 import Image from "next/image";
 import React, { ReactElement } from "react";
 
 const General = () => {
+
   return (
     <div className="border border-[#E6E6E6] rounded-md p-3">
       <div className="flex items-center">
