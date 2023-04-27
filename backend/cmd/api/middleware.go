@@ -20,7 +20,7 @@ const (
 	authorizationPayloadKey = "authorization_payload"
 )
 
-func authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
+func (server *Server) authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authorizationHeader := ctx.GetHeader(authorizationHeaderKey)
 		if authorizationHeader == "" {
@@ -47,6 +47,13 @@ func authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
 		payload, err := tokenMaker.VerifyToken(accessToken)
 		if err != nil {
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+			return
+		}
+
+		exists, err := server.cache.IsSessionBlacklisted(ctx, payload.ID.String())
+		if err != nil || exists {
+			werr := fmt.Errorf("invalid token")
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(werr))
 			return
 		}
 
@@ -82,9 +89,12 @@ func loggerMiddleware() gin.HandlerFunc {
 		duration := time.Since(startTime)
 
 		logger := log.Info()
-		if c.Writer.Status() < http.StatusOK || c.Writer.Status() >= http.StatusMultipleChoices {
+		if c.Writer.Status() < http.StatusOK || c.Writer.Status() >= http.StatusBadRequest {
 			body := buffer.Bytes()
 			logger = log.Error().Bytes("body", body)
+		} else if c.Writer.Status() >= http.StatusMultipleChoices && c.Writer.Status() < http.StatusBadRequest {
+			body := buffer.Bytes()
+			logger = log.Warn().Bytes("body", body)
 		}
 
 		logger.Str("protocol", "HTTP").
