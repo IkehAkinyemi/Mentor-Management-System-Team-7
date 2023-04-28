@@ -2,11 +2,16 @@ import React from "react";
 import Logo from "@/public/images/Logo-Onley-3-01 1.png";
 import { searchIcon, notificationIcon, chatIcon, avatarIcon } from "@/public";
 import Image from "next/image";
-import { signOut } from "next-auth/react";
+
 import Link from "next/link";
-import { redirect } from "next/dist/server/api-utils";
 
 export const Header = () => {
+  const signOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
+
   return (
     <nav className="bg-mmsPry3 h-[102px] w-full flex lg:px-[58px] p-3 py-[30px] justify-between items-center  fixed top-0 left-0 right-0 z-10">
       <div className="logo flex items-center space-x-3">
@@ -55,12 +60,9 @@ export const Header = () => {
             >
               <ul
                 tabIndex={0}
-                className="dropdown-content menu p-2 shadow bg-base-100 rounded-box absolute right-10 top-4 w-52"
+                className="dropdown-content menu p-2 shadow  rounded-box absolute right-10 top-4 w-52 bg-white"
               >
-                <li onClick={() => signOut({
-
-                  redirect : false
-                })}>
+                <li onClick={() => signOut()}>
                   <a>Sign out</a>
                 </li>
               </ul>

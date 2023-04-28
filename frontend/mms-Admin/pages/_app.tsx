@@ -4,8 +4,14 @@ import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 import { useRouter } from "next/router";
-import { SessionProvider } from "next-auth/react";
 import { ProtectedLayout } from "@/components/layouts/protected";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -18,6 +24,8 @@ type AppPropsWithLayout = AppProps & {
   };
   session: any;
 };
+
+const queryClient = new QueryClient();
 export default function App({
   Component,
   pageProps,
@@ -28,10 +36,8 @@ export default function App({
   const router = useRouter();
 
   return getLayout(
-    <SessionProvider session={session}>
-
+    <QueryClientProvider client={queryClient}>
       {Component.requireAuth ? (
-
         <ProtectedLayout>
           <SWRConfig
             value={{
@@ -44,9 +50,7 @@ export default function App({
             {/* </ProtectedLayout> */}
           </SWRConfig>
         </ProtectedLayout>
-   
       ) : (
-        
         <SWRConfig
           value={{
             onError: () => router.push("/admin/profile")
@@ -58,6 +62,6 @@ export default function App({
           {/* </ProtectedLayout> */}
         </SWRConfig>
       )}
-    </SessionProvider>
+    </QueryClientProvider>
   );
 }

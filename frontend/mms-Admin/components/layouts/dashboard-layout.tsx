@@ -2,7 +2,6 @@
 import React from "react";
 import { Header, Sidebar } from "..";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 
 interface dashboardLayout {
   children?: React.ReactNode;
