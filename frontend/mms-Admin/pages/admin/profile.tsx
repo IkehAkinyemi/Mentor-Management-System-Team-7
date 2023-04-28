@@ -8,6 +8,7 @@ import { Calendar, Globe, Mail, MapPin } from "react-feather";
 const Profile = () => {
   const router = useRouter();
   return (
+    
     <div>
       <div className="mb-[60px] flex items-center justify-between">
         <div className="flex items-center">
