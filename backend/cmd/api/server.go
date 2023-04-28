@@ -83,7 +83,7 @@ func (s *Server) setupRouter() {
 	fsysHandler := http.FileServer(http.FS(s.swaggerFiles))
 	router.GET("/api/v1/swagger/*any", gin.WrapH(http.StripPrefix("/api/v1/swagger/", fsysHandler)))
 
-	authRoutes := router.Group("/").Use(s.authMiddleware(s.tokenMaker))
+	authRoutes := router.Group("/").Use(s.authMiddleware(s.tokenMaker), cors.Default())
 	authRoutes.PATCH("/api/v1/users/:id/change_password", s.changeUserPassword)
 	authRoutes.POST("/api/v1/faqs", s.createFAQ)
 	authRoutes.GET("/api/v1/faqs", s.getAllFAQs)
