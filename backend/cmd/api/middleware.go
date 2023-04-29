@@ -119,7 +119,7 @@ func (server *Server) enableCORS() gin.HandlerFunc {
 		if origin != "" && len(server.config.CorsTrustedOrigins) != 0 {
 			for _, v := range server.config.CorsTrustedOrigins {
 				if origin == v || true {
-					c.Header("Access-Control-Allow-Origin", origin)
+					c.Header("Access-Control-Allow-Origin", "*")
 
 					if c.Request.Method == http.MethodOptions && c.Request.Header.Get("Access-Control-Request-Method") != "" {
 						c.Writer.Header().Add("Access-Control-Allow-Methods", "OPTIONS, PUT, PATCH, DELETE")
