@@ -32,7 +32,7 @@ export const useLogin = () => {
         localStorage.setItem("token", response.data.data.token);
         localStorage.setItem("user", JSON.stringify(response.data));
 
-        router.push("/admin/dashboard");
+        router.push("/admin/profile");
       }
       return response.data;
     } catch (error: any) {}
