@@ -11,6 +11,7 @@ export interface InputScaffoldProps {
   gutterBottom?: boolean;
   helperText?: string;
   error?: boolean;
+  inputProps?: any;
   [x: string]: any;
 }
 
@@ -56,7 +57,7 @@ function InputScaffold(
         <p
           className={clsx(
             "text-sm text-action-disabled",
-            !!error && "text-error-dark"
+            !!error && "text-red-500"
           )}
         >
           {helperText}

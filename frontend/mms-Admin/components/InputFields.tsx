@@ -76,6 +76,7 @@ const Input = React.forwardRef(function Input(
     helperText,
     gutterBottom,
     label,
+    inputProps,
     ...rest
   } = props;
 
@@ -95,9 +96,10 @@ const Input = React.forwardRef(function Input(
     >
       <input
         ref={ref}
-        {...rest}
+        {...inputProps}
         className="bg-transparent flex-1 outline-none py-3 min-w-0"
       />
+      
     </InputScaffold>
   );
 });
