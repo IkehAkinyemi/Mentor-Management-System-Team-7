@@ -72,8 +72,8 @@ const Profile = () => {
            
           </div>
           <div className="mx-5">
-            <h3 className="text-mmsBlack2 font-semibold text-2xl">
-            {userData && userData?.data.data.first_name }  
+            <h3 className="text-mmsBlack2 font-semibold text-2xl flex space-x-2">
+            {userData && userData?.data.data.first_name }  ,
             { userData && userData?.data.data.last_name} 
 
             </h3>
