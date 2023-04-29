@@ -8,13 +8,16 @@ import React, { ReactElement } from "react";
 import { API_URL } from "@/lib/constant";
 import { httpClient } from "@/lib/httpClient";
 import { ChangePasswordRequest, DefaultApi } from "@/lib/httpGen";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 
 const Password = () => {
+  const user = JSON.parse(localStorage?.getItem("user")!);
+
+  const userId = user.data.data.id
   const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
   const changePasswordMutation = useMutation(
     async (data: ChangePasswordRequest) =>
-      await passwordApi.usersIdChangePasswordPatch(data),
+      await passwordApi.usersIdChangePasswordPatch(data, userId),
     {
       onSuccess: () => {
         console.log("success");
@@ -31,8 +34,8 @@ const Password = () => {
       confirm_password: ""
     },
     validationSchema: CHANGE_PASSWORD_SCHEMA,
-    onSubmit: (values) => {
-      changePasswordMutation.mutate(values, userId)
+    onSubmit: values => {
+      changePasswordMutation.mutate(values, userId);
     }
   });
   return (
@@ -102,14 +105,19 @@ const Password = () => {
                 onBlur: formik.handleBlur("confirm_password")
               }}
               error={
-                !!formik.touched.confirm_password && !!formik.errors.confirm_password
+                !!formik.touched.confirm_password &&
+                !!formik.errors.confirm_password
               }
               helperText={formik.errors.confirm_password}
             />
           </div>
         </div>
         <div className="flex justify-end mt-5">
-          <Button variant="primary" className="text-base px-4 py-2">
+          <Button
+            variant="primary"
+            className="text-base px-4 py-2"
+            onClick={formik.handleSubmit}
+          >
             Save New Password
           </Button>
         </div>

@@ -5,22 +5,19 @@ import AuthLayout from "../components/layouts/auth-layout";
 import { eyePasswordHideIcon, eyePasswordShowIcon } from "@/public";
 import { useRouter } from "next/router";
 import BeatLoader from "react-spinners/BeatLoader";
-
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useLogin } from "@/hooks/useLogin";
+import axios from "axios";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const { mutate, isLoading, isError, error, isSuccess, data } = useLogin();
+
   const [inputvalues, setInputValues] = useState({
-    email: "ikehfavourdeveloper@gmail.com",
+    email: "evqpsb@email.com",
     password: "secretsz"
   });
-
-  const session = useSession();
-
-  // const loading = session.status === "loading";
-  console.log("session", session);
 
   const override: CSSProperties = {
     display: "block",
@@ -32,50 +29,13 @@ const Login = () => {
 
   const handleLogin = (e: any) => {
     // signIn('google', { callbackUrl: 'http://localhost:3000/admin/profile' })
-    e.preventDefault();
+    // e.preventDefault();
 
-    setLoading(true);
-    signIn(
-      "credentials",
-      {
-        redirect: false,
-        email: inputvalues.email,
-        password: inputvalues.password
-      },
-      {
-        callbackUrl: "http://localhost:3000/admin/profile"
-      }
-    )
-      .then(res => {
-        console.log("res", res);
-        if (res?.ok) {
-          router.push("/admin/profile");
-        }
-
-        // alert("Invalid Credentials");
-
-        if (res?.status === 401) {
-          alert("Invalid Credentials");
-        }
-      })
-      .catch(err => {
-        console.log("err", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    mutate({
+      email: inputvalues.email,
+      password: inputvalues.password
+    });
   };
-
-  useEffect(() => {
-    if (session.status == "authenticated" && !isRedirecting && router.isReady) {
-      // display some message to the user that he is being redirected
-      setIsRedirecting(true);
-      // setTimeout(() => {
-      // redirect to the return url or home page
-      router.push((router.query.returnUrl as string) || "/admin/profile");
-      // }, 2000);
-    }
-  }, [session, isRedirecting, router]);
 
   console.log(inputvalues);
 
@@ -84,9 +44,7 @@ const Login = () => {
       <div className="mb-4">
         <h2 className="text-black font-bold">Welcome!</h2>
 
-        {/* {
-         session && session?.data.user.name
-        } */}
+     
 
         <h3 className="text-grey ">Login to continue</h3>
       </div>
@@ -133,10 +91,10 @@ const Login = () => {
 
         onClick={handleLogin}
       >
-        {loading ? (
+        {isLoading ? (
           <BeatLoader
             color={"#fff"}
-            loading={loading}
+            loading={isLoading}
             cssOverride={override}
             size={15}
             aria-label="Loading Spinner"

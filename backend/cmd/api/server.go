@@ -17,6 +17,7 @@ import (
 	"golang.org/x/oauth2/google"
 
 	"github.com/gin-gonic/gin"
+	cors "github.com/rs/cors/wrapper/gin"
 )
 
 // A Server serves HTTP requests for the banking system
@@ -72,7 +73,8 @@ func NewServer(
 
 func (s *Server) setupRouter() {
 	router := gin.Default()
-	router.Use(loggerMiddleware())
+	// router.Use(cors.Default())
+	router.Use(loggerMiddleware(), cors.Default())
 	router.POST("/api/v1/forgot_password", s.forgotPassword)
 	router.POST("/api/v1/auth/login", s.login)
 	router.GET("/api/v1/auth/google/login", gin.WrapF(s.googleLogin))
@@ -81,11 +83,11 @@ func (s *Server) setupRouter() {
 	fsysHandler := http.FileServer(http.FS(s.swaggerFiles))
 	router.GET("/api/v1/swagger/*any", gin.WrapH(http.StripPrefix("/api/v1/swagger/", fsysHandler)))
 
-	authRoutes := router.Group("/").Use(s.authMiddleware(s.tokenMaker))
+	authRoutes := router.Group("/").Use(s.authMiddleware(s.tokenMaker), cors.Default())
 	authRoutes.PATCH("/api/v1/users/:id/change_password", s.changeUserPassword)
 	authRoutes.POST("/api/v1/faqs", s.createFAQ)
 	authRoutes.GET("/api/v1/faqs", s.getAllFAQs)
-	authRoutes.POST("/api/v1/users/:id", s.updateUser)
+	authRoutes.PATCH("/api/v1/users/:id", s.updateUser)
 	authRoutes.POST("/api/v1/discussions", s.createDiscussion)
 	authRoutes.POST("/api/v1/discussions/:id/add_comment", s.addComment)
 	authRoutes.GET("/api/v1/discussions", s.listDiscussions)
@@ -100,8 +102,8 @@ func (s *Server) Start(address string) error {
 	return s.router.Run(address)
 }
 
-func errorResponse(err error) gin.H {
-	return gin.H{"error": err.Error()}
+func errorResponse(err string) gin.H {
+	return gin.H{"error": err}
 }
 
 type envelop map[string]interface{}

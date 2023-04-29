@@ -406,6 +406,6 @@ DashboardHome.requireAuth = true;
 
 
 DashboardHome.getLayout = function getLayout(page: ReactElement) {
-  return <DashboardLayout title="DashbOARD">{page}</DashboardLayout>;
+  return <DashboardLayout title="Dashboard">{page}</DashboardLayout>;
 };
 
