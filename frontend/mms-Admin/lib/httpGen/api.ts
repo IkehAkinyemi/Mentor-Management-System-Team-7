@@ -51,6 +51,37 @@ export interface ChangePasswordRequest {
 /**
  * 
  * @export
+ * @interface Comment
+ */
+export interface Comment {
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
+    'owner_id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
+    'full_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
+    'content'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
+    'created_at'?: string;
+}
+/**
+ * 
+ * @export
  * @interface Contact
  */
 export interface Contact {
@@ -71,7 +102,13 @@ export interface Contact {
      * @type {string}
      * @memberof Contact
      */
-    'location'?: string;
+    'country'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Contact
+     */
+    'city'?: string;
 }
 /**
  * 
@@ -81,10 +118,128 @@ export interface Contact {
 export interface CreateFAQResponse {
     /**
      * 
-     * @type {FAQ}
+     * @type {CreateFAQResponseData}
      * @memberof CreateFAQResponse
      */
-    'data'?: FAQ;
+    'data'?: CreateFAQResponseData;
+}
+/**
+ * 
+ * @export
+ * @interface CreateFAQResponseData
+ */
+export interface CreateFAQResponseData {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateFAQResponseData
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateFAQResponseData
+     */
+    'question'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateFAQResponseData
+     */
+    'answer'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateFAQResponseData
+     */
+    'category'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface Discussion
+ */
+export interface Discussion {
+    /**
+     * 
+     * @type {string}
+     * @memberof Discussion
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Discussion
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Discussion
+     */
+    'content'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Discussion
+     */
+    'created_at'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Discussion
+     */
+    'owner_id'?: string;
+    /**
+     * 
+     * @type {Array<Comment>}
+     * @memberof Discussion
+     */
+    'comments'?: Array<Comment>;
+}
+/**
+ * 
+ * @export
+ * @interface DiscussionsIdAddCommentPostRequest
+ */
+export interface DiscussionsIdAddCommentPostRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscussionsIdAddCommentPostRequest
+     */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscussionsIdAddCommentPostRequest
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscussionsIdAddCommentPostRequest
+     */
+    'content'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface DiscussionsPostRequest
+ */
+export interface DiscussionsPostRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscussionsPostRequest
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscussionsPostRequest
+     */
+    'content'?: string;
 }
 /**
  * 
@@ -297,6 +452,79 @@ export interface SocialsGithubUrl {
 /**
  * 
  * @export
+ * @interface UpdateUserResquest
+ */
+export interface UpdateUserResquest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'last_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'about'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'website'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'profile_image_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'country'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'city'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'github_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'linkedin_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'twitter_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserResquest
+     */
+    'instagram_url'?: string;
+}
+/**
+ * 
+ * @export
  * @interface User
  */
 export interface User {
@@ -311,7 +539,13 @@ export interface User {
      * @type {string}
      * @memberof User
      */
-    'full_name'?: string;
+    'first_name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'last_name'?: string;
     /**
      * 
      * @type {string}
@@ -377,52 +611,28 @@ export interface UsersIdChangePasswordPatch200Response {
 /**
  * 
  * @export
- * @interface UsersIdPost200Response
+ * @interface UsersIdPatch200Response
  */
-export interface UsersIdPost200Response {
+export interface UsersIdPatch200Response {
     /**
      * 
-     * @type {string}
-     * @memberof UsersIdPost200Response
+     * @type {UsersIdPatch200ResponseData}
+     * @memberof UsersIdPatch200Response
      */
-    'result'?: string;
-    /**
-     * 
-     * @type {UsersIdPost200ResponseData}
-     * @memberof UsersIdPost200Response
-     */
-    'data'?: UsersIdPost200ResponseData;
+    'data'?: UsersIdPatch200ResponseData;
 }
 /**
  * 
  * @export
- * @interface UsersIdPost200ResponseData
+ * @interface UsersIdPatch200ResponseData
  */
-export interface UsersIdPost200ResponseData {
+export interface UsersIdPatch200ResponseData {
     /**
      * 
-     * @type {string}
-     * @memberof UsersIdPost200ResponseData
+     * @type {User}
+     * @memberof UsersIdPatch200ResponseData
      */
-    'full_name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UsersIdPost200ResponseData
-     */
-    'about'?: string;
-    /**
-     * 
-     * @type {Contact}
-     * @memberof UsersIdPost200ResponseData
-     */
-    'contact'?: Contact;
-    /**
-     * 
-     * @type {Socials}
-     * @memberof UsersIdPost200ResponseData
-     */
-    'socials'?: Socials;
+    'user'?: User;
 }
 
 /**
@@ -508,13 +718,13 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Login a user
-         * @param {LoginRequest} userCredentials Email address and password of the user to authenticate
+         * @param {LoginRequest} credentials Email address and password of the user to authenticate
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authLoginPost: async (userCredentials: LoginRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'userCredentials' is not null or undefined
-            assertParamExists('authLoginPost', 'userCredentials', userCredentials)
+        authLoginPost: async (credentials: LoginRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'credentials' is not null or undefined
+            assertParamExists('authLoginPost', 'credentials', credentials)
             const localVarPath = `/auth/login`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -534,7 +744,212 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userCredentials, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(credentials, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Logout a user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authLogoutPost: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/auth/logout`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary List all discussions for a user
+         * @param {number} pageId What page to start from
+         * @param {number} pageSize What page size to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsGet: async (pageId: number, pageSize: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'pageId' is not null or undefined
+            assertParamExists('discussionsGet', 'pageId', pageId)
+            // verify required parameter 'pageSize' is not null or undefined
+            assertParamExists('discussionsGet', 'pageSize', pageSize)
+            const localVarPath = `/discussions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (pageId !== undefined) {
+                localVarQueryParameter['page_id'] = pageId;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['page_size'] = pageSize;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Add a comment on discussion
+         * @param {DiscussionsIdAddCommentPostRequest} comment Content of the comment and owner\&#39;s full name 
+         * @param {string} id Discussion ID to add comment
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsIdAddCommentPost: async (comment: DiscussionsIdAddCommentPostRequest, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'comment' is not null or undefined
+            assertParamExists('discussionsIdAddCommentPost', 'comment', comment)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discussionsIdAddCommentPost', 'id', id)
+            const localVarPath = `/discussions/:id/add_comment`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(comment, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update a discussion
+         * @param {DiscussionsPostRequest} titleAndContent The discussion new title and content
+         * @param {string} id Discussion ID to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsIdPatch: async (titleAndContent: DiscussionsPostRequest, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'titleAndContent' is not null or undefined
+            assertParamExists('discussionsIdPatch', 'titleAndContent', titleAndContent)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discussionsIdPatch', 'id', id)
+            const localVarPath = `/discussions/:id`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(titleAndContent, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Create a discussion forum
+         * @param {DiscussionsPostRequest} titleAndContent Title and content of the discussion
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsPost: async (titleAndContent: DiscussionsPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'titleAndContent' is not null or undefined
+            assertParamExists('discussionsPost', 'titleAndContent', titleAndContent)
+            const localVarPath = `/discussions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(titleAndContent, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -574,13 +989,13 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Create FAQ
-         * @param {FAQ} fAQDetails Details of FAQ to create
+         * @param {FAQ} fAQ Details of FAQ to create
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        faqsPost: async (fAQDetails: FAQ, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'fAQDetails' is not null or undefined
-            assertParamExists('faqsPost', 'fAQDetails', fAQDetails)
+        faqsPost: async (fAQ: FAQ, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fAQ' is not null or undefined
+            assertParamExists('faqsPost', 'fAQ', fAQ)
             const localVarPath = `/faqs`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -603,7 +1018,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(fAQDetails, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(fAQ, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -613,13 +1028,13 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Request for password reset
-         * @param {ForgotPasswordPostRequest} usersEmail User\&#39;s email to send reset password email/token
+         * @param {ForgotPasswordPostRequest} email User\&#39;s email to send reset password email/token
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        forgotPasswordPost: async (usersEmail: ForgotPasswordPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'usersEmail' is not null or undefined
-            assertParamExists('forgotPasswordPost', 'usersEmail', usersEmail)
+        forgotPasswordPost: async (email: ForgotPasswordPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'email' is not null or undefined
+            assertParamExists('forgotPasswordPost', 'email', email)
             const localVarPath = `/forgot_password`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -639,7 +1054,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(usersEmail, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(email, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -649,14 +1064,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Changer user\'s password
-         * @param {ChangePasswordRequest} newPassword Current password and new password of the user to update
+         * @param {ChangePasswordRequest} passwords Current password and new password of the user to update
          * @param {string} id ID of the user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersIdChangePasswordPatch: async (newPassword: ChangePasswordRequest, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'newPassword' is not null or undefined
-            assertParamExists('usersIdChangePasswordPatch', 'newPassword', newPassword)
+        usersIdChangePasswordPatch: async (passwords: ChangePasswordRequest, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'passwords' is not null or undefined
+            assertParamExists('usersIdChangePasswordPatch', 'passwords', passwords)
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersIdChangePasswordPatch', 'id', id)
             const localVarPath = `/users/:id/change_password`
@@ -682,7 +1097,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(newPassword, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(passwords, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -692,13 +1107,13 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary Update user\'s profile info
-         * @param {User} usersInfo Update user\&#39;s profile data
+         * @param {UpdateUserResquest} usersInfo Update user\&#39;s profile data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersIdPost: async (usersInfo: User, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersIdPatch: async (usersInfo: UpdateUserResquest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'usersInfo' is not null or undefined
-            assertParamExists('usersIdPost', 'usersInfo', usersInfo)
+            assertParamExists('usersIdPatch', 'usersInfo', usersInfo)
             const localVarPath = `/users/:id`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -707,7 +1122,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -763,12 +1178,69 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Login a user
-         * @param {LoginRequest} userCredentials Email address and password of the user to authenticate
+         * @param {LoginRequest} credentials Email address and password of the user to authenticate
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authLoginPost(userCredentials: LoginRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.authLoginPost(userCredentials, options);
+        async authLoginPost(credentials: LoginRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.authLoginPost(credentials, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Logout a user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async authLogoutPost(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdChangePasswordPatch200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.authLogoutPost(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary List all discussions for a user
+         * @param {number} pageId What page to start from
+         * @param {number} pageSize What page size to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discussionsGet(pageId: number, pageSize: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Discussion>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discussionsGet(pageId, pageSize, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Add a comment on discussion
+         * @param {DiscussionsIdAddCommentPostRequest} comment Content of the comment and owner\&#39;s full name 
+         * @param {string} id Discussion ID to add comment
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discussionsIdAddCommentPost(comment: DiscussionsIdAddCommentPostRequest, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Comment>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discussionsIdAddCommentPost(comment, id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update a discussion
+         * @param {DiscussionsPostRequest} titleAndContent The discussion new title and content
+         * @param {string} id Discussion ID to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discussionsIdPatch(titleAndContent: DiscussionsPostRequest, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Discussion>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discussionsIdPatch(titleAndContent, id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Create a discussion forum
+         * @param {DiscussionsPostRequest} titleAndContent Title and content of the discussion
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discussionsPost(titleAndContent: DiscussionsPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Discussion>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discussionsPost(titleAndContent, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -784,46 +1256,46 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Create FAQ
-         * @param {FAQ} fAQDetails Details of FAQ to create
+         * @param {FAQ} fAQ Details of FAQ to create
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async faqsPost(fAQDetails: FAQ, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateFAQResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.faqsPost(fAQDetails, options);
+        async faqsPost(fAQ: FAQ, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateFAQResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.faqsPost(fAQ, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Request for password reset
-         * @param {ForgotPasswordPostRequest} usersEmail User\&#39;s email to send reset password email/token
+         * @param {ForgotPasswordPostRequest} email User\&#39;s email to send reset password email/token
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async forgotPasswordPost(usersEmail: ForgotPasswordPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdChangePasswordPatch200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.forgotPasswordPost(usersEmail, options);
+        async forgotPasswordPost(email: ForgotPasswordPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdChangePasswordPatch200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.forgotPasswordPost(email, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Changer user\'s password
-         * @param {ChangePasswordRequest} newPassword Current password and new password of the user to update
+         * @param {ChangePasswordRequest} passwords Current password and new password of the user to update
          * @param {string} id ID of the user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersIdChangePasswordPatch(newPassword: ChangePasswordRequest, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdChangePasswordPatch200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdChangePasswordPatch(newPassword, id, options);
+        async usersIdChangePasswordPatch(passwords: ChangePasswordRequest, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdChangePasswordPatch200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdChangePasswordPatch(passwords, id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @summary Update user\'s profile info
-         * @param {User} usersInfo Update user\&#39;s profile data
+         * @param {UpdateUserResquest} usersInfo Update user\&#39;s profile data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersIdPost(usersInfo: User, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdPost200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdPost(usersInfo, options);
+        async usersIdPatch(usersInfo: UpdateUserResquest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdPatch200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdPatch(usersInfo, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -859,12 +1331,64 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary Login a user
-         * @param {LoginRequest} userCredentials Email address and password of the user to authenticate
+         * @param {LoginRequest} credentials Email address and password of the user to authenticate
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authLoginPost(userCredentials: LoginRequest, options?: any): AxiosPromise<LoginResponse> {
-            return localVarFp.authLoginPost(userCredentials, options).then((request) => request(axios, basePath));
+        authLoginPost(credentials: LoginRequest, options?: any): AxiosPromise<LoginResponse> {
+            return localVarFp.authLoginPost(credentials, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Logout a user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authLogoutPost(options?: any): AxiosPromise<UsersIdChangePasswordPatch200Response> {
+            return localVarFp.authLogoutPost(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary List all discussions for a user
+         * @param {number} pageId What page to start from
+         * @param {number} pageSize What page size to return
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsGet(pageId: number, pageSize: number, options?: any): AxiosPromise<Array<Discussion>> {
+            return localVarFp.discussionsGet(pageId, pageSize, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Add a comment on discussion
+         * @param {DiscussionsIdAddCommentPostRequest} comment Content of the comment and owner\&#39;s full name 
+         * @param {string} id Discussion ID to add comment
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsIdAddCommentPost(comment: DiscussionsIdAddCommentPostRequest, id: string, options?: any): AxiosPromise<Array<Comment>> {
+            return localVarFp.discussionsIdAddCommentPost(comment, id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update a discussion
+         * @param {DiscussionsPostRequest} titleAndContent The discussion new title and content
+         * @param {string} id Discussion ID to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsIdPatch(titleAndContent: DiscussionsPostRequest, id: string, options?: any): AxiosPromise<Discussion> {
+            return localVarFp.discussionsIdPatch(titleAndContent, id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Create a discussion forum
+         * @param {DiscussionsPostRequest} titleAndContent Title and content of the discussion
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsPost(titleAndContent: DiscussionsPostRequest, options?: any): AxiosPromise<Discussion> {
+            return localVarFp.discussionsPost(titleAndContent, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -878,43 +1402,43 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary Create FAQ
-         * @param {FAQ} fAQDetails Details of FAQ to create
+         * @param {FAQ} fAQ Details of FAQ to create
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        faqsPost(fAQDetails: FAQ, options?: any): AxiosPromise<CreateFAQResponse> {
-            return localVarFp.faqsPost(fAQDetails, options).then((request) => request(axios, basePath));
+        faqsPost(fAQ: FAQ, options?: any): AxiosPromise<CreateFAQResponse> {
+            return localVarFp.faqsPost(fAQ, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Request for password reset
-         * @param {ForgotPasswordPostRequest} usersEmail User\&#39;s email to send reset password email/token
+         * @param {ForgotPasswordPostRequest} email User\&#39;s email to send reset password email/token
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        forgotPasswordPost(usersEmail: ForgotPasswordPostRequest, options?: any): AxiosPromise<UsersIdChangePasswordPatch200Response> {
-            return localVarFp.forgotPasswordPost(usersEmail, options).then((request) => request(axios, basePath));
+        forgotPasswordPost(email: ForgotPasswordPostRequest, options?: any): AxiosPromise<UsersIdChangePasswordPatch200Response> {
+            return localVarFp.forgotPasswordPost(email, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Changer user\'s password
-         * @param {ChangePasswordRequest} newPassword Current password and new password of the user to update
+         * @param {ChangePasswordRequest} passwords Current password and new password of the user to update
          * @param {string} id ID of the user
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersIdChangePasswordPatch(newPassword: ChangePasswordRequest, id: string, options?: any): AxiosPromise<UsersIdChangePasswordPatch200Response> {
-            return localVarFp.usersIdChangePasswordPatch(newPassword, id, options).then((request) => request(axios, basePath));
+        usersIdChangePasswordPatch(passwords: ChangePasswordRequest, id: string, options?: any): AxiosPromise<UsersIdChangePasswordPatch200Response> {
+            return localVarFp.usersIdChangePasswordPatch(passwords, id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Update user\'s profile info
-         * @param {User} usersInfo Update user\&#39;s profile data
+         * @param {UpdateUserResquest} usersInfo Update user\&#39;s profile data
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersIdPost(usersInfo: User, options?: any): AxiosPromise<UsersIdPost200Response> {
-            return localVarFp.usersIdPost(usersInfo, options).then((request) => request(axios, basePath));
+        usersIdPatch(usersInfo: UpdateUserResquest, options?: any): AxiosPromise<UsersIdPatch200Response> {
+            return localVarFp.usersIdPatch(usersInfo, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -953,13 +1477,75 @@ export class DefaultApi extends BaseAPI {
     /**
      * 
      * @summary Login a user
-     * @param {LoginRequest} userCredentials Email address and password of the user to authenticate
+     * @param {LoginRequest} credentials Email address and password of the user to authenticate
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public authLoginPost(userCredentials: LoginRequest, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).authLoginPost(userCredentials, options).then((request) => request(this.axios, this.basePath));
+    public authLoginPost(credentials: LoginRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).authLoginPost(credentials, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Logout a user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public authLogoutPost(options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).authLogoutPost(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary List all discussions for a user
+     * @param {number} pageId What page to start from
+     * @param {number} pageSize What page size to return
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public discussionsGet(pageId: number, pageSize: number, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).discussionsGet(pageId, pageSize, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Add a comment on discussion
+     * @param {DiscussionsIdAddCommentPostRequest} comment Content of the comment and owner\&#39;s full name 
+     * @param {string} id Discussion ID to add comment
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public discussionsIdAddCommentPost(comment: DiscussionsIdAddCommentPostRequest, id: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).discussionsIdAddCommentPost(comment, id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update a discussion
+     * @param {DiscussionsPostRequest} titleAndContent The discussion new title and content
+     * @param {string} id Discussion ID to update
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public discussionsIdPatch(titleAndContent: DiscussionsPostRequest, id: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).discussionsIdPatch(titleAndContent, id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Create a discussion forum
+     * @param {DiscussionsPostRequest} titleAndContent Title and content of the discussion
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public discussionsPost(titleAndContent: DiscussionsPostRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).discussionsPost(titleAndContent, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -976,50 +1562,50 @@ export class DefaultApi extends BaseAPI {
     /**
      * 
      * @summary Create FAQ
-     * @param {FAQ} fAQDetails Details of FAQ to create
+     * @param {FAQ} fAQ Details of FAQ to create
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public faqsPost(fAQDetails: FAQ, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).faqsPost(fAQDetails, options).then((request) => request(this.axios, this.basePath));
+    public faqsPost(fAQ: FAQ, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).faqsPost(fAQ, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Request for password reset
-     * @param {ForgotPasswordPostRequest} usersEmail User\&#39;s email to send reset password email/token
+     * @param {ForgotPasswordPostRequest} email User\&#39;s email to send reset password email/token
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public forgotPasswordPost(usersEmail: ForgotPasswordPostRequest, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).forgotPasswordPost(usersEmail, options).then((request) => request(this.axios, this.basePath));
+    public forgotPasswordPost(email: ForgotPasswordPostRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).forgotPasswordPost(email, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Changer user\'s password
-     * @param {ChangePasswordRequest} newPassword Current password and new password of the user to update
+     * @param {ChangePasswordRequest} passwords Current password and new password of the user to update
      * @param {string} id ID of the user
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public usersIdChangePasswordPatch(newPassword: ChangePasswordRequest, id: string, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).usersIdChangePasswordPatch(newPassword, id, options).then((request) => request(this.axios, this.basePath));
+    public usersIdChangePasswordPatch(passwords: ChangePasswordRequest, id: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).usersIdChangePasswordPatch(passwords, id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Update user\'s profile info
-     * @param {User} usersInfo Update user\&#39;s profile data
+     * @param {UpdateUserResquest} usersInfo Update user\&#39;s profile data
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public usersIdPost(usersInfo: User, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).usersIdPost(usersInfo, options).then((request) => request(this.axios, this.basePath));
+    public usersIdPatch(usersInfo: UpdateUserResquest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).usersIdPatch(usersInfo, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

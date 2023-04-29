@@ -19,7 +19,7 @@ import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 
-export const BASE_PATH = "https://https://mms-team-7.onrender.com/api/v1".replace(/\/+$/, "");
+export const BASE_PATH = "https://mms-team-7.onrender.com/api/v1".replace(/\/+$/, "");
 
 /**
  *

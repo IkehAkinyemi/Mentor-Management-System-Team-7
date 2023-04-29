@@ -49,7 +49,7 @@ const Password = () => {
             <InputField
               label=""
               placeholder="your current password"
-              id="currentPassword"
+              id="current_password"
               type="password"
               className="w-full md:w-[593px] bg-white"
               inputProps={{
@@ -73,7 +73,7 @@ const Password = () => {
             <InputField
               label=""
               placeholder="Must be at least 8 characters"
-              id="newPassword"
+              id="new_Password"
               type="password"
               className="w-full md:w-[593px] bg-white"
               inputProps={{
@@ -96,7 +96,7 @@ const Password = () => {
             <InputField
               label=""
               placeholder="Must match your new password"
-              id="confirmNewPassword"
+              id="confirm_password"
               type="password"
               className="w-full md:w-[593px] bg-white"
               inputProps={{
