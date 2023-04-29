@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import axios from "axios";
 
 // const token = ls.get('token');
-let data = JSON.stringify({
-  email: "evqpsb@email.com",
-  password: "secretsz"
-});
+// let data = JSON.stringify({
+//   email: 
+//   password: "secretsz"
+// });
 export const useLogin = () => {
 
   const router = useRouter();
@@ -16,7 +16,10 @@ export const useLogin = () => {
     try {
       const response = await axios.post(
         `https://mms-team-7.onrender.com/api/v1/auth/login`,
-        data,
+        {
+          email,
+          password
+        },
 
         {
           headers: {
@@ -32,7 +35,7 @@ export const useLogin = () => {
         localStorage.setItem("token", response.data.data.token);
         localStorage.setItem("user", JSON.stringify(response.data));
 
-        router.push("/admin/dashboard");
+        router.push("/admin/profile");
       }
       return response.data;
     } catch (error: any) {}

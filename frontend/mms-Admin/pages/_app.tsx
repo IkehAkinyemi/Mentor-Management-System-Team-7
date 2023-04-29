@@ -39,28 +39,19 @@ export default function App({
     <QueryClientProvider client={queryClient}>
       {Component.requireAuth ? (
         <ProtectedLayout>
-          <SWRConfig
-            value={{
-              onError: () => router.push("/admin/profile")
-            }}
-          >
+   
+          
             {/* <ProtectedLayout> */}
             <Component {...pageProps} />
 
             {/* </ProtectedLayout> */}
-          </SWRConfig>
+
         </ProtectedLayout>
       ) : (
-        <SWRConfig
-          value={{
-            onError: () => router.push("/admin/profile")
-          }}
-        >
-          {/* <ProtectedLayout> */}
+      
           <Component {...pageProps} />
 
-          {/* </ProtectedLayout> */}
-        </SWRConfig>
+    
       )}
     </QueryClientProvider>
   );

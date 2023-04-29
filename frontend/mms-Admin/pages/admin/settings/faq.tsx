@@ -1,8 +1,15 @@
 import SettingsLayout from "@/components/Settings/SettingsLayout";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 import React, { ReactElement } from "react";
+import { useFetchFAQ } from "../../../hooks/useFAQ";
+
 
 const FAQ = () => {
+
+
+  const { data , error } = useFetchFAQ()
+
+  console.log(data , 'FAQ')
   return <div>FAQ</div>;
 };
 
@@ -17,3 +24,4 @@ FAQ.getLayout = function getLayout(page: ReactElement) {
 };
 
 FAQ.requireAuth = true;
+
