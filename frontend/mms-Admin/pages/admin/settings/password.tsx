@@ -11,30 +11,30 @@ import { ChangePasswordRequest, DefaultApi } from "@/lib/httpGen";
 import { useMutation } from "react-query";
 
 const Password = () => {
-  // const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
-  // const changePasswordMutation = useMutation(
-  //   async (data: ChangePasswordRequest) =>
-  //     await passwordApi.usersIdChangePasswordPatch(data, userId),
-  //   {
-  //     onSuccess: () => {
-  //       console.log("success");
-  //     },
-  //     onError: () => {
-  //       console.log("Error");
-  //     }
-  //   }
-  // );
-  // const formik = useFormik({
-  //   initialValues: {
-  //     current_password: "",
-  //     new_password: "",
-  //     confirm_password: ""
-  //   },
-  //   validationSchema: CHANGE_PASSWORD_SCHEMA,
-  //   onSubmit: (values) => {
-  //     changePasswordMutation.mutate(values, userId)
-  //   }
-  // });
+  const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
+  const changePasswordMutation = useMutation(
+    async (data: ChangePasswordRequest) =>
+      await passwordApi.usersIdChangePasswordPatch(data),
+    {
+      onSuccess: () => {
+        console.log("success");
+      },
+      onError: () => {
+        console.log("Error");
+      }
+    }
+  );
+  const formik = useFormik({
+    initialValues: {
+      current_password: "",
+      new_password: "",
+      confirm_password: ""
+    },
+    validationSchema: CHANGE_PASSWORD_SCHEMA,
+    onSubmit: (values) => {
+      changePasswordMutation.mutate(values, userId)
+    }
+  });
   return (
     <div className="border border-[#E6E6E6] rounded-md p-3">
       <div className="mt-5">
@@ -49,16 +49,16 @@ const Password = () => {
               id="currentPassword"
               type="password"
               className="w-full md:w-[593px] bg-white"
-              // inputProps={{
-              //   value: formik.values.current_password,
-              //   onChange: formik.handleChange("current_password"),
-              //   onBlur: formik.handleBlur("current_password")
-              // }}
-              // error={
-              //   !!formik.touched.current_password &&
-              //   !!formik.errors.current_password
-              // }
-              // helperText={formik.errors.current_password}
+              inputProps={{
+                value: formik.values.current_password,
+                onChange: formik.handleChange("current_password"),
+                onBlur: formik.handleBlur("current_password")
+              }}
+              error={
+                !!formik.touched.current_password &&
+                !!formik.errors.current_password
+              }
+              helperText={formik.errors.current_password}
             />
           </div>
         </div>
@@ -73,15 +73,15 @@ const Password = () => {
               id="newPassword"
               type="password"
               className="w-full md:w-[593px] bg-white"
-              // inputProps={{
-              //   value: formik.values.new_password,
-              //   onChange: formik.handleChange("new_password"),
-              //   onBlur: formik.handleBlur("new_password")
-              // }}
-              // error={
-              //   !!formik.touched.new_password && !!formik.errors.new_password
-              // }
-              // helperText={formik.errors.new_password}
+              inputProps={{
+                value: formik.values.new_password,
+                onChange: formik.handleChange("new_password"),
+                onBlur: formik.handleBlur("new_password")
+              }}
+              error={
+                !!formik.touched.new_password && !!formik.errors.new_password
+              }
+              helperText={formik.errors.new_password}
             />
           </div>
         </div>
@@ -96,15 +96,15 @@ const Password = () => {
               id="confirmNewPassword"
               type="password"
               className="w-full md:w-[593px] bg-white"
-              // inputProps={{
-              //   value: formik.values.confirm_password,
-              //   onChange: formik.handleChange("confirm_password"),
-              //   onBlur: formik.handleBlur("confirm_password")
-              // }}
-              // error={
-              //   !!formik.touched.confirm_password && !!formik.errors.confirm_password
-              // }
-              // helperText={formik.errors.confirm_password}
+              inputProps={{
+                value: formik.values.confirm_password,
+                onChange: formik.handleChange("confirm_password"),
+                onBlur: formik.handleBlur("confirm_password")
+              }}
+              error={
+                !!formik.touched.confirm_password && !!formik.errors.confirm_password
+              }
+              helperText={formik.errors.confirm_password}
             />
           </div>
         </div>

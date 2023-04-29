@@ -28,13 +28,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-feather": "^2.0.10",
-<<<<<<< HEAD
     "react-query": "^3.39.3",
     "swr": "^2.1.5",
-=======
     "react-spinners": "^0.13.8",
-    "swr": "^2.1.2",
->>>>>>> 6531af28f1ebc286a0a44aeb619b09d90735895d
     "tailwindcss": "3.3.1",
     "typescript": "5.0.3",
     "yup": "^1.1.1"

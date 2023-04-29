@@ -15,7 +15,7 @@ export default NextAuth({
         email: { label: "email", type: "email", placeholder: "jsmith" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials, req) {
+      async authorize(credentials :any, req : any) {
         // Add logic here to look up the user from the credentials supplied
 
         const res = await fetch(
@@ -60,13 +60,13 @@ export default NextAuth({
 
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token , user } : any) {
       console.log(user, "user");
 
       //   console.log(token, "token");
       return { token, ...user };
     },
-    async session({ session, token, user }) {
+    async session({ session, token, user } : any) {
       session.user = token as any;
       return session;
     }
