@@ -25,6 +25,7 @@ type Config struct {
 	GoogleClientSecret   string        `mapstructure:"GOOGLE_CLIENT_SECRET"`
 	GoogleRedirectURL    string        `mapstructure:"GOOGLE_REDIRECT_URL"`
 	GoogleRandomString   string        `mapstructure:"GOOGLE_RANDOM_STRING"`
+	CorsTrustedOrigins   []string      `mapstructure:"CORS_TRUSTED_ORIGINS"`
 }
 
 // LoadConfig parses configuration file or environment variables

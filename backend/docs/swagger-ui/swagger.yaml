@@ -6,7 +6,8 @@ info:
   coordination of mentors needed to execute projects, ranging from recruitment to 
   off-boarding. Ensue to go through the app doc below to read more and follow all the instructions."
   version: "1.0.0"
-host: "mms-team-7.onrender.com"
+# host: "mms-team-7.onrender.com"
+host: "localhost:8080"
 basePath: "/api/v1"
 schemes:
   - "https"
@@ -98,7 +99,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /users/:id:
+  /users:
     patch:
       summary: "Update user's profile info"
       parameters:
