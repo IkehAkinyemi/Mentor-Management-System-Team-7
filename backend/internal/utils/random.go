@@ -60,5 +60,5 @@ func UserRole(role string) string {
 
 // RandomEmail generates a random email.
 func RandomEmail() string {
-	return fmt.Sprintf("%s@email.com", RandomString(6))
+	return fmt.Sprintf("%s@gmail.com", RandomString(6))
 }

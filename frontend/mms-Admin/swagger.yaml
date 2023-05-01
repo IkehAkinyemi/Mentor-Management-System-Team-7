@@ -98,7 +98,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  /users:
+  /users/:id:
     patch:
       summary: "Update user's profile info"
       parameters:
