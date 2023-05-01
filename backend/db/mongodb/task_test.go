@@ -1,3 +1,4 @@
+// Package mongodb (verify_email) defines db queries for the
 package mongodb
 
 import (
@@ -11,13 +12,6 @@ import (
 )
 
 func createTestTask(t *testing.T) *models.Task {
-	// test object
-	// {
-	// 	"title": "Task title",
-	// 	"details": "Task details",
-	// 	"mentor_managers": ["644b99e39b4964f5c55c7d59"],
-	// 	"mentors": ["644b9a018a46b3d3ec2d1f43"]
-	// }
 
 	mentorManagerID, _ := primitive.ObjectIDFromHex("644b99e39b4964f5c55c7d59")
 	mentorID, _ := primitive.ObjectIDFromHex("644b9a018a46b3d3ec2d1f43")
