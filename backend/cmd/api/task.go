@@ -1,4 +1,4 @@
-// // Package mongodb (task) defines functions to create and get Tasks from DB.
+// Package mongodb (task) defines functions to create and get Tasks from DB.
 package api
 
 import (

@@ -1,4 +1,4 @@
-// Package mongodb (discussion_forum) includes db functions for the discussion forum.
+// Package mongodb (tasks) includes db functions for the tasks.
 package mongodb
 
 import (
