@@ -1,4 +1,3 @@
-// Package api (discussion) includes endpoints for the discussion forum.
 package api
 
 import (
@@ -14,46 +13,68 @@ import (
 )
 
 type createTaskRequest struct {
-	Title           string             `json:"title" binding:"required"`
-	Details         string             `json:"details" binding:"required"`
-	MentorManagerID primitive.ObjectID `bson:"mentor_manager_id,omitempty" json:"mentor_manager_id,omitempty"`
-	MentorID        primitive.ObjectID `bson:"mentor_id,omitempty" json:"mentor_id,omitempty"`
+	Title          string   `json:"title" binding:"required"`
+	Details        string   `json:"details" binding:"required"`
+	MentorManagers []string `json:"mentor_managers" binding:"required,min=1"`
+	Mentors        []string `json:"mentors" binding:"required,min=1"`
 }
 
 func (server *Server) createTask(ctx *gin.Context) {
 	var req createTaskRequest
+
 	if err := bindJSONWithValidation(ctx, ctx.ShouldBindJSON(&req), validator.New()); err != nil {
 		return
 	}
 
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	userID, err := primitive.ObjectIDFromHex(authPayload.UserID)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to parse user's ID"))
+	if authPayload.UserRole != "Admin" {
+		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to create task"))
 		return
 	}
 
-	arg := &models.Task{
-		Title:           req.Title,
-		Details:         req.Details,
-		MentorManagerID: userID,
-		MentorID:        userID,
-		CreatedAt:       time.Now(),
+	// check if mentor managers exist in the database and get their ids
+	mentorManagerIDs := []primitive.ObjectID{}
+	for _, mentorManager := range req.MentorManagers {
+		user, err := server.store.GetUserByID(ctx, mentorManager)
+		if err != nil || user.Role != "Mentor Manager(MM)" {
+			ctx.JSON(http.StatusInternalServerError, errorResponse("failed to get mentor manager"))
+			return
+		}
+
+		mentorManagerIDs = append(mentorManagerIDs, user.ID)
 	}
 
-	discussion, err := server.store.CreateTask(ctx, arg)
+	// check if mentors exist in the database and get their ids
+	mentorIDs := []primitive.ObjectID{}
+	for _, mentor := range req.Mentors {
+		user, err := server.store.GetUserByID(ctx, mentor)
+		if err != nil || user.Role != "Mentor" {
+			ctx.JSON(http.StatusInternalServerError, errorResponse("failed to get mentor"))
+			return
+		}
+		mentorIDs = append(mentorIDs, user.ID)
+	}
+
+	task := &models.Task{
+		Title:          req.Title,
+		Details:        req.Details,
+		MentorManagers: mentorManagerIDs,
+		Mentors:        mentorIDs,
+		CreatedAt:      time.Now(),
+	}
+
+	resp, err := server.store.CreateTask(ctx, task)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to create task"))
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, envelop{"data": discussion})
+	ctx.JSON(http.StatusCreated, envelop{"data": resp})
 	log.Info().
-		Str("task_id", discussion.ID.String()).
 		Str("user_id", authPayload.UserID).
 		Str("ip_address", ctx.ClientIP()).
 		Str("user_agent", ctx.Request.UserAgent()).
 		Str("request_method", ctx.Request.Method).
 		Str("request_path", ctx.Request.URL.Path).
-		Msg("Task created")
+		Msg("task created")
 }
