@@ -115,6 +115,7 @@ type Comment struct {
 	CreatedAt time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
 }
 
+// Task represents the data model for a task.
 type Task struct {
     ID                 primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
     Title              string               `bson:"title,omitempty" json:"title,omitempty"`
