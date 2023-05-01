@@ -31,6 +31,7 @@ func (server *Server) createTask(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to create task"))
 		return
 	}
+	
 
 	// check if mentor managers exist in the database and get their ids
 	mentorManagerIDs := []primitive.ObjectID{}
