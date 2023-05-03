@@ -114,3 +114,13 @@ type Comment struct {
 	Content   string             `bson:"content,omitempty" json:"content,omitempty"`
 	CreatedAt time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
 }
+
+// Task represents the data model for a task.
+type Task struct {
+    ID                 primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
+    Title              string               `bson:"title,omitempty" json:"title,omitempty"`
+    Details            string               `bson:"details,omitempty" json:"details,omitempty"`
+    MentorManagers     []primitive.ObjectID `bson:"mentor_managers,omitempty" json:"mentor_managers,omitempty"`
+    Mentors            []primitive.ObjectID `bson:"mentors,omitempty" json:"mentors,omitempty"`
+    CreatedAt          time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty"`
+}

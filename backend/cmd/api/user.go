@@ -4,6 +4,7 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -167,6 +168,8 @@ func (server *Server) login(ctx *gin.Context) {
 	}
 	// Get user by email.
 	user, err := server.store.GetUserByEmail(ctx, req.Email)
+	fmt.Println("user", user)
+
 	if err != nil {
 		switch {
 		case errors.Is(err, db.ErrRecordNotFound):
