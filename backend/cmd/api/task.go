@@ -1,7 +1,6 @@
 // Package api (task) defines functions to create and get Tasks from DB.
 package api
 
-
 import (
 	"net/http"
 	"time"
@@ -33,7 +32,6 @@ func (server *Server) createTask(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to create task"))
 		return
 	}
-
 
 	// check if mentor managers exist in the database and get their ids
 	mentorManagerIDs := []primitive.ObjectID{}
@@ -80,4 +78,33 @@ func (server *Server) createTask(ctx *gin.Context) {
 		Str("request_method", ctx.Request.Method).
 		Str("request_path", ctx.Request.URL.Path).
 		Msg("task created")
+}
+
+type listTasksResponse struct {
+	ID      primitive.ObjectID `json:"id" bson:"_id"`
+	Title   string             `json:"title" bson:"title"`
+	Details string             `json:"details" bson:"details"`
+	// Array of object for mentor managers and mentors
+	MentorManagers []models.User `json:"mentor_managers" bson:"mentor_managers"`
+	Mentors        []models.User `json:"mentors" bson:"mentors"`
+	CreatedAt      time.Time     `json:"created_at" bson:"created_at"`
+}
+
+// listTasks returns a list of tasks.
+func (server *Server) listTasks(ctx *gin.Context) {
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if authPayload.UserRole != "Admin" {
+		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to list tasks"))
+		return
+	}
+
+	tasks, err := server.store.ListTasks(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to list tasks"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, envelop{"data": tasks})
+
 }
