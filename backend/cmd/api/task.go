@@ -80,15 +80,7 @@ func (server *Server) createTask(ctx *gin.Context) {
 		Msg("task created")
 }
 
-type listTasksResponse struct {
-	ID      primitive.ObjectID `json:"id" bson:"_id"`
-	Title   string             `json:"title" bson:"title"`
-	Details string             `json:"details" bson:"details"`
-	// Array of object for mentor managers and mentors
-	MentorManagers []models.User `json:"mentor_managers" bson:"mentor_managers"`
-	Mentors        []models.User `json:"mentors" bson:"mentors"`
-	CreatedAt      time.Time     `json:"created_at" bson:"created_at"`
-}
+
 
 // listTasks returns a list of tasks.
 func (server *Server) listTasks(ctx *gin.Context) {
