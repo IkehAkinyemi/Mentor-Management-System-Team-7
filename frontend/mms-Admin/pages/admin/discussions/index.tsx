@@ -1,8 +1,9 @@
 import { NewPostModal } from "@/components";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 import React, { ReactElement, useState } from "react";
-import { commentIcon, bookmark, shareIcon, moreIcon } from "@/public";
+import { commentIcon, bookmark, shareIcon, moreIcon , seemoreIcon, clockIcon } from "@/public";
 import Image from "next/image";
+import Link from "next/link";
 
 let dummy = [
   {
@@ -95,7 +96,9 @@ function Index() {
               <div className="first">
                 <div className="flex items-center space-x-[29px]">
                   <div className="comment cursor-pointer">
-                    <Image src={commentIcon} alt="comment" />
+                    <Link href={`/admin/discussions/comment`}>
+                      <Image src={commentIcon} alt="comment" />
+                    </Link>
                   </div>
                   <div className="bookmark cursor-pointer">
                     <Image src={bookmark} alt="bookmark" />
@@ -107,28 +110,7 @@ function Index() {
               </div>
 
               <div className="second flex items-center text-xs text-mmsBlack5 font-normal">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                    stroke="#058B94"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M12 6V12L16 16"
-                    stroke="#058B94"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+          <Image src={clockIcon} alt="clock" />
 
                 {item.date}
               </div>

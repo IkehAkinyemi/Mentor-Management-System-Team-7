@@ -26,3 +26,4 @@ export { default as commentIcon } from "./images/svgs/comment.svg";
 export { default as shareIcon } from "./images/svgs/share.svg";
 export { default as bookmark } from "./images/svgs/bookmark.svg";
 export { default as moreIcon } from "./images/svgs/more.svg";
+export { default as clockIcon } from "./images/svgs/clock.svg";
