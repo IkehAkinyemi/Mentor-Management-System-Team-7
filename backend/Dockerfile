@@ -1,4 +1,4 @@
-FROM golang:latest
+FROM golang:1.20
 
 WORKDIR /mms_7_backend_app
 
