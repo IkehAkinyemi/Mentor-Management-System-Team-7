@@ -1,7 +1,6 @@
 // Package api (task) defines functions to create and get Tasks from DB.
 package api
 
-
 import (
 	"net/http"
 	"time"
@@ -33,7 +32,6 @@ func (server *Server) createTask(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to create task"))
 		return
 	}
-
 
 	// check if mentor managers exist in the database and get their ids
 	mentorManagerIDs := []primitive.ObjectID{}
@@ -80,4 +78,25 @@ func (server *Server) createTask(ctx *gin.Context) {
 		Str("request_method", ctx.Request.Method).
 		Str("request_path", ctx.Request.URL.Path).
 		Msg("task created")
+}
+
+
+
+// listTasks returns a list of tasks.
+func (server *Server) listTasks(ctx *gin.Context) {
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if authPayload.UserRole != "Admin" {
+		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to list tasks"))
+		return
+	}
+
+	tasks, err := server.store.ListTasks(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to list tasks"))
+		return
+	}
+// Todo: add mentor managers and mentors to the response
+	ctx.JSON(http.StatusOK, envelop{"data": tasks})
+
 }

@@ -68,4 +68,9 @@ type Store interface {
 
 	// GetTask retrieves a task by its ID.
 	GetTask(ctx context.Context, taskID string) (*models.Task, error)
+
+	// ListTasks retrieves a list of tasks 
+	ListTasks(ctx context.Context) ([]*models.Task, error)
+
+
 }

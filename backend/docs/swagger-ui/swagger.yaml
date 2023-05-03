@@ -413,7 +413,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - Bearer: []
-
+  
 definitions:
   ChangePasswordRequest:
     type: object

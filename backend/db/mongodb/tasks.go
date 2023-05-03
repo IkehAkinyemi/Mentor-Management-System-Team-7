@@ -40,3 +40,18 @@ func (mc *MongoClient) GetTask(ctx context.Context, taskID string) (*models.Task
 	}
 	return &task, nil
 }
+
+// ListTasks retrieves a list  all tasks
+func (mc *MongoClient) ListTasks(ctx context.Context) ([]*models.Task, error) {
+	var tasks []*models.Task
+	cursor, err := mc.client.Database(DBName).Collection(TasksCollection).Find(ctx, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	if err = cursor.All(ctx, &tasks); err != nil {
+		return nil, err
+
+	}
+	return tasks, nil
+
+}
