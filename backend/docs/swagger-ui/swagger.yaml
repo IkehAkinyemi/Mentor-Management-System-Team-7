@@ -445,17 +445,7 @@ paths:
         - Bearer: []
     get:
       summary: "List all tasks for a user"
-      parameters:
-        - name: "page_id"
-          in: query
-          description: "What page to start from"
-          required: true
-          type: integer
-        - name: "page_size"
-          in: query
-          description: "What page size to return"
-          required: true
-          type: integer
+    
       responses:
         200:
           description: "OK"
@@ -721,6 +711,24 @@ definitions:
       created_at:
         type: string
         format: date-time
+  Task:
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      owner_id:
+        type: string
+      comments:
+        type: array
+        items:
+          $ref: "#/definitions/Comment"      
 
   ErrorResponse:
     type: object

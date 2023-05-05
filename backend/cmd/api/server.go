@@ -93,6 +93,8 @@ func (s *Server) setupRouter() {
 	authRoutes.PATCH("/api/v1/discussions/:id", s.updateDiscussion)
 	authRoutes.POST("/api/v1/tasks", s.createTask)
 	authRoutes.GET("/api/v1/tasks", s.listTasks)
+	authRoutes.PATCH("/api/v1/tasks/:id", s.updateTask)
+	authRoutes.GET("/api/v1/tasks/:id", s.getTask)
 	authRoutes.POST("/api/v1/auth/logout", s.logout)
 
 	s.router = router

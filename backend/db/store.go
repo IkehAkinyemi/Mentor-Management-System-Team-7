@@ -72,5 +72,7 @@ type Store interface {
 	// ListTasks retrieves a list of tasks 
 	ListTasks(ctx context.Context) ([]*models.Task, error)
 
+	// UpdateTask updates an existing task document in the collection.
+	UpdateTask(ctx context.Context, taskID string, data *models.Task) (*models.Task, error)
 
 }
