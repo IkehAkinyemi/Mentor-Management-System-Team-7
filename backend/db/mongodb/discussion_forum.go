@@ -47,13 +47,9 @@ func (mc *MongoClient) GetDiscussion(ctx context.Context, discussionID string) (
 
 // ListDiscussions retrieves a list of discussions belonging to a particular owner with pagination.
 func (mc *MongoClient) ListDiscussions(ctx context.Context, ownerID string, page int64, limit int64) ([]*models.Discussion, error) {
-	objectID, err := primitive.ObjectIDFromHex(ownerID)
-	if err != nil {
-		return nil, err
-	}
-
-	filter := bson.M{"owner_id": objectID}
+	filter := bson.M{}
 	opts := options.Find().SetSkip((page - 1) * limit).SetLimit(limit)
+	// cursor, err := mc.client.Database(DBName).Collection(DiscussionsCollection).Find(ctx, filter, opts)
 	cursor, err := mc.client.Database(DBName).Collection(DiscussionsCollection).Find(ctx, filter, opts)
 	if err != nil {
 		return nil, err
