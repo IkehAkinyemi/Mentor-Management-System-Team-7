@@ -100,3 +100,32 @@ func (mc *MongoClient) DeleteUser(ctx context.Context, id string) (*mongo.Delete
 	filter := bson.M{"_id": objID}
 	return mc.client.Database(DBName).Collection(UsersCollection).DeleteOne(ctx, filter)
 }
+
+// List all mentors
+func (mc *MongoClient) ListMentors(ctx context.Context) ([]*models.User, error) {
+	var users []*models.User
+	filter := bson.M{"role": "Mentor"}
+	cursor, err := mc.client.Database(DBName).Collection(UsersCollection).Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	if err = cursor.All(ctx, &users); err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+// List all mentor managers
+
+func (mc *MongoClient) ListMentorManagers(ctx context.Context) ([]*models.User, error) {
+	var users []*models.User
+	filter := bson.M{"role": "Mentor Manager (MM)"}
+	cursor, err := mc.client.Database(DBName).Collection(UsersCollection).Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	if err = cursor.All(ctx, &users); err != nil {
+		return nil, err
+	}
+	return users, nil
+}

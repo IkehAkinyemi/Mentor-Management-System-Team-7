@@ -96,6 +96,8 @@ func (s *Server) setupRouter() {
 	authRoutes.GET("/api/v1/tasks", s.listTasks)
 	authRoutes.PATCH("/api/v1/tasks/:id", s.updateTask)
 	authRoutes.GET("/api/v1/tasks/:id", s.getTask)
+	authRoutes.GET("/api/v1/mentors", s.listMentors)
+	authRoutes.GET("/api/v1/mentor_managers", s.listMentorManagers)
 	authRoutes.POST("/api/v1/auth/logout", s.logout)
 
 	s.router = router

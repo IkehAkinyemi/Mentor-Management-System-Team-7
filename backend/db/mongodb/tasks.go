@@ -58,7 +58,6 @@ func (mc *MongoClient) ListTasks(ctx context.Context) ([]*models.Task, error) {
 
 // UpdateTask updates an existing task document in the collection.
 func (mc *MongoClient) UpdateTask(ctx context.Context, taskID string, data *models.Task) (*models.Task, error) {
-    
 	objectID, err := primitive.ObjectIDFromHex(taskID)
 	if err != nil {
 		return nil, err

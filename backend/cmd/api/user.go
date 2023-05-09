@@ -403,6 +403,7 @@ func (server *Server) logout(ctx *gin.Context) {
 		Str("request_path", ctx.Request.URL.Path).
 		Msg("logged out user")
 }
+
 type resetUserPasswordQuery struct {
 	ResetToken string `form:"reset_token" binding:"required"`
 }
@@ -412,7 +413,7 @@ type resetUserRequest struct {
 	ConfirmPassword string `json:"confirm_new_password" binding:"required,min=8,eqfield=NewPassword"`
 }
 
-func (server *Server) resetPassword(ctx *gin.Context)  {
+func (server *Server) resetPassword(ctx *gin.Context) {
 	var reqQuery resetUserPasswordQuery
 	var reqBody resetUserRequest
 
@@ -464,4 +465,26 @@ func (server *Server) resetPassword(ctx *gin.Context)  {
 	}
 
 	ctx.JSON(http.StatusOK, envelop{"result": "password updated successfully"})
+}
+
+// List all mentors
+func (server *Server) listMentors(ctx *gin.Context) {
+	mentors, err := server.store.ListMentors(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to fetch mentors"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, envelop{"data": mentors})
+}
+
+// List all mentor managers
+func (server *Server) listMentorManagers(ctx *gin.Context) {
+	mentorManagers, err := server.store.ListMentorManagers(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to fetch mentor managers"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, envelop{"data": mentorManagers})
 }
