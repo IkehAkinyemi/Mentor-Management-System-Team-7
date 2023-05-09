@@ -426,8 +426,17 @@ paths:
             properties:
               title:
                 type: string
-              content:
+              details:
                 type: string
+              mentors:
+                type: array
+                items:
+                  type: string
+              mentor_managers:
+                type: array
+                items:
+                  type: string
+                      
       responses:
         201:
           description: "Created"
@@ -463,7 +472,16 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - Bearer: []     
-   
+  /tasks/:id:
+    get: 
+      summary: "Get a task"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Task ID to get"
+          required: true
+          type: string
+    
     patch:
       summary: "Update a task"
       parameters:
@@ -481,8 +499,18 @@ paths:
             properties:
               title:
                 type: string
-              content:
+              details:
                 type: string
+              mentors:
+                type: array
+                items:
+                  type: string 
+              mentor_managers:
+                type: array
+                items:
+                  type: string
+                  
+             
       responses:
         200:
           description: "OK"
@@ -498,6 +526,7 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - Bearer: []
+    
 definitions:
   ChangePasswordRequest:
     type: object
@@ -718,17 +747,21 @@ definitions:
         type: string
       title:
         type: string
-      content:
+      details:
         type: string
       created_at:
         type: string
         format: date-time
-      owner_id:
-        type: string
-      comments:
+      mentors:
         type: array
         items:
-          $ref: "#/definitions/Comment"      
+          type: string
+      mentor_managers:
+        type: array
+        items:
+          type: string
+    
+ 
 
   ErrorResponse:
     type: object

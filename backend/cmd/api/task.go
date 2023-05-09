@@ -37,7 +37,7 @@ func (server *Server) createTask(ctx *gin.Context) {
 	mentorManagerIDs := []primitive.ObjectID{}
 	for _, mentorManager := range req.MentorManagers {
 		user, err := server.store.GetUserByID(ctx, mentorManager)
-		if err != nil || user.Role != "Mentor Manager(MM)" {
+		if err != nil || user.Role != "Mentor Manager (MM)" {
 			ctx.JSON(http.StatusInternalServerError, errorResponse("failed to get mentor manager"))
 			return
 		}
@@ -80,8 +80,6 @@ func (server *Server) createTask(ctx *gin.Context) {
 		Msg("task created")
 }
 
-
-
 // listTasks returns a list of tasks.
 func (server *Server) listTasks(ctx *gin.Context) {
 
@@ -96,7 +94,7 @@ func (server *Server) listTasks(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to list tasks"))
 		return
 	}
-// Todo: add mentor managers and mentors to the response
+	// Todo: add mentor managers and mentors to the response
 	ctx.JSON(http.StatusOK, envelop{"data": tasks})
 
 }
@@ -121,10 +119,6 @@ func (server *Server) getTask(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, envelop{"data": task})
 }
 
-// updateTask   
-
-// update task struct
-
 type updateTaskRequest struct {
 	Title          string   `json:"title" binding:"required"`
 	Details        string   `json:"details" binding:"required"`
@@ -132,7 +126,7 @@ type updateTaskRequest struct {
 	Mentors        []string `json:"mentors" binding:"required,min=1"`
 }
 
-
+// updateTask updates an existing task document in the collection.
 func (server *Server) updateTask(ctx *gin.Context) {
 
 	var req updateTaskRequest
@@ -150,9 +144,8 @@ func (server *Server) updateTask(ctx *gin.Context) {
 	// check if mentor managers exist in the database and get their ids
 	mentorManagerIDs := []primitive.ObjectID{}
 	for _, mentorManager := range req.MentorManagers {
-
 		user, err := server.store.GetUserByID(ctx, mentorManager)
-		if err != nil || user.Role != "Mentor Manager(MM)" {
+		if err != nil || user.Role != "Mentor Manager (MM)" {
 			ctx.JSON(http.StatusInternalServerError, errorResponse("failed to get mentor manager"))
 			return
 		}
@@ -161,7 +154,6 @@ func (server *Server) updateTask(ctx *gin.Context) {
 	}
 
 	// check if mentors exist in the database and get their ids
-
 	mentorIDs := []primitive.ObjectID{}
 	for _, mentor := range req.Mentors {
 		user, err := server.store.GetUserByID(ctx, mentor)
@@ -200,6 +192,3 @@ func (server *Server) updateTask(ctx *gin.Context) {
 		Str("request_path", ctx.Request.URL.Path).
 		Msg("task updated")
 }
-
- 
-	
