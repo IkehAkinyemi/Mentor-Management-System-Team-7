@@ -116,7 +116,6 @@ func (mc *MongoClient) ListMentors(ctx context.Context) ([]*models.User, error) 
 }
 
 // List all mentor managers
-
 func (mc *MongoClient) ListMentorManagers(ctx context.Context) ([]*models.User, error) {
 	var users []*models.User
 	filter := bson.M{"role": "Mentor Manager (MM)"}
