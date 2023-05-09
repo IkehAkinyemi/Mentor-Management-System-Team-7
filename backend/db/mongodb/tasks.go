@@ -55,3 +55,55 @@ func (mc *MongoClient) ListTasks(ctx context.Context) ([]*models.Task, error) {
 	return tasks, nil
 
 }
+
+// UpdateTask updates an existing task document in the collection.
+func (mc *MongoClient) UpdateTask(ctx context.Context, taskID string, data *models.Task) (*models.Task, error) {
+    
+	objectID, err := primitive.ObjectIDFromHex(taskID)
+	if err != nil {
+		return nil, err
+	}
+	result, err := mc.client.Database(DBName).Collection(TasksCollection).UpdateOne(ctx, bson.M{"_id": objectID}, bson.M{"$set": data})
+	if err != nil {
+		return nil, err
+	}
+	if result.MatchedCount == 0 {
+		return nil, db.ErrRecordNotFound
+	}
+	return mc.GetTask(ctx, taskID)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+     
+
+
+
+
+
+   
+
+	 
+

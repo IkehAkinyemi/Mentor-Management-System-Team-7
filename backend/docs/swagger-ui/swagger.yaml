@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   title: "MMS-Team-7"
   description: "
-  Mentors Management system is a people management app that enables proper. 
+Mentors Management system is a people management app that enables proper. 
   coordination of mentors needed to execute projects, ranging from recruitment to 
   off-boarding. Ensue to go through the app doc below to read more and follow all the instructions."
   version: "1.0.0"
@@ -456,7 +456,120 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - Bearer: []
-  
+  /tasks:
+    post: 
+      summary: "Create a task"
+      parameters:
+        - name: "title and content"
+          in: body
+          description: "Title and content of the task"
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              details:
+                type: string
+              mentors:
+                type: array
+                items:
+                  type: string
+              mentor_managers:
+                type: array
+                items:
+                  type: string
+                      
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Task"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+    get:
+      summary: "List all tasks for a user"
+    
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Task"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []     
+  /tasks/:id:
+    get: 
+      summary: "Get a task"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Task ID to get"
+          required: true
+          type: string
+    
+    patch:
+      summary: "Update a task"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Task ID to update"
+          required: true
+          type: string
+        - name: "title and content"
+          in: body
+          description: "The task new title and content"
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              details:
+                type: string
+              mentors:
+                type: array
+                items:
+                  type: string 
+              mentor_managers:
+                type: array
+                items:
+                  type: string
+                  
+             
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Task"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+    
 definitions:
   ChangePasswordRequest:
     type: object
@@ -670,6 +783,28 @@ definitions:
       created_at:
         type: string
         format: date-time
+  Task:
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      details:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      mentors:
+        type: array
+        items:
+          type: string
+      mentor_managers:
+        type: array
+        items:
+          type: string
+    
+ 
 
   ErrorResponse:
     type: object
