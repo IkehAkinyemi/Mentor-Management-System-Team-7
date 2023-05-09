@@ -69,10 +69,15 @@ type Store interface {
 	// GetTask retrieves a task by its ID.
 	GetTask(ctx context.Context, taskID string) (*models.Task, error)
 
-	// ListTasks retrieves a list of tasks 
+	// ListTasks retrieves a list of tasks
 	ListTasks(ctx context.Context) ([]*models.Task, error)
 
 	// UpdateTask updates an existing task document in the collection.
 	UpdateTask(ctx context.Context, taskID string, data *models.Task) (*models.Task, error)
 
+	// List all mentors
+	ListMentors(ctx context.Context) ([]*models.User, error)
+
+	// List all mentor managers
+	ListMentorManagers(ctx context.Context) ([]*models.User, error)
 }

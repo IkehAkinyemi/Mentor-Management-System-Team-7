@@ -569,7 +569,48 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - Bearer: []
+  /mentors:
+   get:
+      summary: "List all mentors "
+   
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
     
+  /mentor_mangers: 
+    get:
+      summary: "List all mentor managers "
+     
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+
+
 definitions:
   ChangePasswordRequest:
     type: object

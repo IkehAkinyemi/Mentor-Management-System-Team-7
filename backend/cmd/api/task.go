@@ -100,7 +100,6 @@ func (server *Server) listTasks(ctx *gin.Context) {
 }
 
 // getTask returns a task by id.
-
 func (server *Server) getTask(ctx *gin.Context) {
 	taskID := ctx.Param("id")
 
