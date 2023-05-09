@@ -21,12 +21,12 @@ securityDefinitions:
     name: Authorization
     in: header
 paths:
-  /users/:id/change_password:
+  /users/{id}/change_password:
     patch:
       summary: "Changer user's password"
       parameters:
         - name: "id"
-          in: path
+          in: "path"
           description: "ID of the user"
           required: true
           type: string
@@ -97,6 +97,49 @@ paths:
           description: "Internal Server Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+
+  /reset_password:
+    patch:
+      summary: "Reset user's password"
+      parameters:
+        - name: "reset_token"
+          in: "query"
+          description: "Signed token to reset password"
+          required: true
+          schema:
+            type: string
+        - name: "New password credentials"
+          in: "body"
+          description: "Current password and new password of the user to update"
+          required: true
+          schema:
+            type: object
+            properties:
+              new_password:
+                type: string
+              confirm_new_password:
+                type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
 
   /users:
     patch:
@@ -338,7 +381,7 @@ paths:
       security:
         - Bearer: []
 
-  /discussions/:id:
+  /discussions/{id}:
     patch:
       summary: "Update a discussion"
       parameters:
@@ -374,7 +417,7 @@ paths:
       security:
         - Bearer: []
 
-  /discussions/:id/add_comment:
+  /discussions/{id}/add_comment:
     post:
       summary: "Add a comment on discussion"
       parameters:
@@ -535,7 +578,7 @@ definitions:
         type: string
       new_password:
         type: string
-      confirm_password:
+      confirm_new_password:
         type: string
 
   LoginRequest:
