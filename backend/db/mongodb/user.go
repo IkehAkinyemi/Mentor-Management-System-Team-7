@@ -101,7 +101,7 @@ func (mc *MongoClient) DeleteUser(ctx context.Context, id string) (*mongo.Delete
 	return mc.client.Database(DBName).Collection(UsersCollection).DeleteOne(ctx, filter)
 }
 
-// List all mentors
+// ListMentors retrieves a list of all mentors
 func (mc *MongoClient) ListMentors(ctx context.Context) ([]*models.User, error) {
 	var users []*models.User
 	filter := bson.M{"role": "Mentor"}
@@ -115,7 +115,7 @@ func (mc *MongoClient) ListMentors(ctx context.Context) ([]*models.User, error) 
 	return users, nil
 }
 
-// List all mentor managers
+// ListMentorManagers retrieves a list of all mentor managers
 func (mc *MongoClient) ListMentorManagers(ctx context.Context) ([]*models.User, error) {
 	var users []*models.User
 	filter := bson.M{"role": "Mentor Manager (MM)"}
