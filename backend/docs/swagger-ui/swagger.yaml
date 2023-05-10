@@ -141,10 +141,16 @@ paths:
             $ref: "#/definitions/ErrorResponse"
 
 
-  /users:
+  /users/{id}:
     patch:
       summary: "Update user's profile info"
       parameters:
+        - name: "id"
+          in: path
+          description: "User's ID to update"
+          required: true
+          schema:
+            type: string
         - name: "User's info"
           in: "body"
           description: "Update user's profile data"
@@ -408,6 +414,38 @@ paths:
             $ref: "#/definitions/Discussion"
         400:
           description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+    get:
+      summary: "Get a discussion"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Discussion ID to retrieve"
+          required: true
+          type: string
+      responses:
+        200:
+          200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Discussion"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
           schema:
             $ref: "#/definitions/ErrorResponse"
         500:
@@ -805,8 +843,15 @@ definitions:
       created_at:
         type: string
         format: date-time
-      owner_id:
-        type: string
+      creator_details:
+        type: object
+        properties:
+          id:
+            type: string
+          profile_image_url:
+            type: string
+          full_name:
+            type: string
       comments:
         type: array
         items:
@@ -824,6 +869,9 @@ definitions:
       created_at:
         type: string
         format: date-time
+      profile_image_url:
+        type: string
+
   Task:
     type: object
     properties:
@@ -844,8 +892,6 @@ definitions:
         type: array
         items:
           type: string
-    
- 
 
   ErrorResponse:
     type: object

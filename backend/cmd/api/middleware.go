@@ -106,7 +106,6 @@ func loggerMiddleware() gin.HandlerFunc {
 	}
 }
 
-
 // enableCORS enables cross-site requests for web user-agents.
 func (server *Server) enableCORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
