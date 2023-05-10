@@ -2,16 +2,17 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/ALCOpenSource/Mentor-Management-System-Team-7/backend/db"
 	"github.com/ALCOpenSource/Mentor-Management-System-Team-7/backend/db/models"
 	"github.com/ALCOpenSource/Mentor-Management-System-Team-7/backend/internal/token"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/rs/zerolog/log"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type createDiscussionRequest struct {
@@ -26,16 +27,21 @@ func (server *Server) createDiscussion(ctx *gin.Context) {
 	}
 
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	userID, err := primitive.ObjectIDFromHex(authPayload.UserID)
+
+	creator, err := server.store.GetUser(ctx, authPayload.UserID)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to parse user's ID"))
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to get user info"))
 		return
 	}
 
 	arg := &models.Discussion{
-		Title:     req.Title,
-		Content:   req.Content,
-		OwnerID:   userID,
+		Title:   req.Title,
+		Content: req.Content,
+		Creator: models.CreatorDetails{
+			ID: creator.ID,
+			ProfileImageURL: creator.ProfileImageURL,
+			FullName: fmt.Sprintf("%s %s", creator.FirstName, creator.LastName),
+		},
 		CreatedAt: time.Now(),
 		Comments:  []models.Comment{},
 		UpdatedAt: time.Now(),
@@ -60,8 +66,6 @@ func (server *Server) createDiscussion(ctx *gin.Context) {
 
 type addCommentRequest struct {
 	Content   string `json:"content" binding:"required"`
-	FirstName string `json:"first_name" binding:"required"`
-	LastName  string `json:"last_name" binding:"required"`
 }
 
 type addCommentRequestID struct {
@@ -81,16 +85,16 @@ func (server *Server) addComment(ctx *gin.Context) {
 	}
 
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	userID, err := primitive.ObjectIDFromHex(authPayload.UserID)
+
+	creator, err := server.store.GetUser(ctx, authPayload.UserID)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to parse user's ID"))
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to get user info"))
 		return
 	}
 
-	fullName := fmt.Sprintf("%s %s", reqBody.FirstName, reqBody.LastName)
 	arg := &models.Comment{
-		OwnerID:   userID,
-		FullName:  fullName,
+		OwnerID:   creator.ID,
+		FullName:  fmt.Sprintf("%s %s", creator.FirstName, creator.LastName),
 		Content:   reqBody.Content,
 		CreatedAt: time.Now(),
 	}
@@ -184,4 +188,38 @@ func (server *Server) updateDiscussion(ctx *gin.Context) {
 		Str("request_method", ctx.Request.Method).
 		Str("request_path", ctx.Request.URL.Path).
 		Msg("discussion updated")
+}
+
+type getDiscussionRequestID struct {
+	ID string `uri:"id" binding:"required"`
+}
+
+func (server *Server) getDiscussion(ctx *gin.Context) {
+	var req getDiscussionRequestID
+	if err := bindJSONWithValidation(ctx, ctx.ShouldBindUri(&req), validator.New()); err != nil {
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+
+	discussion, err := server.store.GetDiscussion(ctx, req.ID)
+	if err != nil {
+		if errors.Is(err, db.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, errorResponse(db.ErrRecordNotFound.Error()))
+			return
+		}
+
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to fetch discussion"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, envelop{"data": discussion})
+	log.Info().
+	Str("discussion_id", req.ID).
+	Str("user_id", authPayload.UserID).
+	Str("ip_address", ctx.ClientIP()).
+	Str("user_agent", ctx.Request.UserAgent()).
+	Str("request_method", ctx.Request.Method).
+	Str("request_path", ctx.Request.URL.Path).
+	Msg("retrieved discussion")
 }

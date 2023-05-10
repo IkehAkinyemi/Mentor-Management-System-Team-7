@@ -103,24 +103,33 @@ type Discussion struct {
 	Content   string             `bson:"content,omitempty" json:"content,omitempty"`
 	CreatedAt time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
 	UpdatedAt time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty"`
-	OwnerID   primitive.ObjectID `bson:"owner_id,omitempty" json:"owner_id,omitempty"`
+	Creator   CreatorDetails     `bson:"creator_details,omitempty" json:"creator_details,omitempty"`
 	Comments  []Comment          `bson:"comments,omitempty" json:"comments,omitempty"`
+}
+
+// CreatorDetails represent the data model of user
+// that created a discussion
+type CreatorDetails struct {
+	ID              primitive.ObjectID `bson:"id,omitempty" json:"id,omitempty"`
+	ProfileImageURL string             `bson:"profile_image_url,omitempty" json:"profile_image_url,omitempty"`
+	FullName        string             `bson:"full_name,omitempty" json:"full_name,omitempty"`
 }
 
 // Comment represents the data model for a comment
 type Comment struct {
-	OwnerID   primitive.ObjectID `bson:"owner_id,omitempty" json:"owner_id,omitempty"`
-	FullName  string             `bson:"full_name,omitempty" json:"full_name,omitempty"`
-	Content   string             `bson:"content,omitempty" json:"content,omitempty"`
-	CreatedAt time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
+	OwnerID         primitive.ObjectID `bson:"owner_id,omitempty" json:"owner_id,omitempty"`
+	FullName        string             `bson:"full_name,omitempty" json:"full_name,omitempty"`
+	Content         string             `bson:"content,omitempty" json:"content,omitempty"`
+	CreatedAt       time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
+	ProfileImageURL string             `bson:"profile_image_url,omitempty" json:"profile_image_url,omitempty"`
 }
 
 // Task represents the data model for a task.
 type Task struct {
-    ID                 primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
-    Title              string               `bson:"title,omitempty" json:"title,omitempty"`
-    Details            string               `bson:"details,omitempty" json:"details,omitempty"`
-    MentorManagers     []primitive.ObjectID `bson:"mentor_managers,omitempty" json:"mentor_managers,omitempty"`
-    Mentors            []primitive.ObjectID `bson:"mentors,omitempty" json:"mentors,omitempty"`
-    CreatedAt          time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty"`
+	ID             primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
+	Title          string               `bson:"title,omitempty" json:"title,omitempty"`
+	Details        string               `bson:"details,omitempty" json:"details,omitempty"`
+	MentorManagers []primitive.ObjectID `bson:"mentor_managers,omitempty" json:"mentor_managers,omitempty"`
+	Mentors        []primitive.ObjectID `bson:"mentors,omitempty" json:"mentors,omitempty"`
+	CreatedAt      time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty"`
 }
