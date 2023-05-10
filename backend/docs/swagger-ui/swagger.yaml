@@ -141,10 +141,16 @@ paths:
             $ref: "#/definitions/ErrorResponse"
 
 
-  /users:
+  /users/{id}:
     patch:
       summary: "Update user's profile info"
       parameters:
+        - name: "id"
+          in: path
+          description: "User's ID to update"
+          required: true
+          schema:
+            type: string
         - name: "User's info"
           in: "body"
           description: "Update user's profile data"

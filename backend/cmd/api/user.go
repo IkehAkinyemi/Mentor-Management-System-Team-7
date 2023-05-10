@@ -32,13 +32,13 @@ type changeUserPasswordRequestID struct {
 }
 
 func (server *Server) changeUserPassword(ctx *gin.Context) {
-	var reqID changeUserPasswordRequestID
-	if err := bindJSONWithValidation(ctx, ctx.ShouldBindUri(&reqID), validator.New()); err != nil {
+	var pathVar changeUserPasswordRequestID
+	if err := bindJSONWithValidation(ctx, ctx.ShouldBindUri(&pathVar), validator.New()); err != nil {
 		return
 	}
 
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	if reqID.ID != authPayload.UserID {
+	if pathVar.ID != authPayload.UserID {
 		ctx.JSON(http.StatusUnauthorized, errorResponse("mismatched user"))
 		return
 	}
@@ -317,13 +317,26 @@ type updateUserRequest struct {
 	InstagramURL    *string `json:"instagram_url"`
 }
 
+type updateUserRequestID struct {
+	ID string `uri:"id" binding:"required,min=1"` 
+}
+
 func (server *Server) updateUser(ctx *gin.Context) {
 	var req updateUserRequest
 	if err := bindJSONWithValidation(ctx, ctx.ShouldBindJSON(&req), validator.New()); err != nil {
 		return
 	}
 
+	var pathVar updateUserRequestID
+	if err := bindJSONWithValidation(ctx, ctx.ShouldBindUri(&pathVar), validator.New()); err != nil {
+		return
+	}
+
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if pathVar.ID != authPayload.UserID {
+		ctx.JSON(http.StatusUnauthorized, errorResponse("mismatched user"))
+		return
+	}
 
 	arg := map[string]interface{}{}
 
