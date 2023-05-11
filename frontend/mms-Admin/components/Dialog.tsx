@@ -24,16 +24,16 @@ export function Dialog(props: IDialogProps) {
         {
           ["bg-action-backdrop"]:
             variant === "scroll" || variant === "scrollable",
-          ["overflow-y-hidden"]: variant === "scrollable",
+          ["overflow-y-hidden"]: variant === "scrollable"
         },
-        "modal fixed block w-full h-full outline-none overflow-x-hidden overflow-y-auto top-0 left-0"
+        "z-50 fixed block w-full h-full outline-none overflow-x-hidden overflow-y-auto top-0 left-0"
       )}
     >
       <div className={clsx(className, DialogVariant[variant!], "relative")}>
         <DialogContent
           className={clsx({
             ["max-h-[100%]"]: variant === "scrollable",
-            ["rounded-lg"]: variant === "scroll" || variant === "scrollable",
+            ["rounded-lg"]: variant === "scroll" || variant === "scrollable"
           })}
         >
           {children}
@@ -46,9 +46,11 @@ export function Dialog(props: IDialogProps) {
 export default Dialog;
 
 const DialogVariant = {
-  fullscreen: "modal-fullscreen",
-  scroll: "modal-dialog h-full",
-  scrollable: "modal-dialog-scrollable modal-dialog",
+  fullscreen: "w-full",
+  scroll:
+    "w-[300px] mx-auto md:w-[500px] lg:w-full flex items-center justify-center h-full",
+  scrollable:
+    "max-h-[100%] mx-auto w-full flex items-center justify-center h-full"
 };
 
 export function DialogContent(props: any) {

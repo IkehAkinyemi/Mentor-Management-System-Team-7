@@ -12,7 +12,7 @@ import Cookies from "js-cookie";
 const ForgotPassword = () => {
   const router = useRouter();
   const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
-  const updateProfileMutation = useMutation(
+  const forgotPasswordMutation = useMutation(
     async (data: ForgotPasswordPostRequest) =>
       await passwordApi.forgotPasswordPost(data),
     {
@@ -33,7 +33,7 @@ const ForgotPassword = () => {
       email: yup.string().label("Email").required()
     }),
     onSubmit: values => {
-      updateProfileMutation.mutate(values);
+      forgotPasswordMutation.mutate(values);
     }
   });
   return (
