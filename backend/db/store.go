@@ -62,4 +62,22 @@ type Store interface {
 
 	// AddComment adds a new comment document to a discussion document in the collection.
 	AddComment(ctx context.Context, discussionID string, comment *models.Comment) ([]models.Comment, error)
+
+	// CreateTask adds a new task document to the collection.
+	CreateTask(ctx context.Context, task *models.Task) (*models.Task, error)
+
+	// GetTask retrieves a task by its ID.
+	GetTask(ctx context.Context, taskID string) (*models.Task, error)
+
+	// ListTasks retrieves a list of tasks
+	ListTasks(ctx context.Context) ([]*models.Task, error)
+
+	// UpdateTask updates an existing task document in the collection.
+	UpdateTask(ctx context.Context, taskID string, data *models.Task) (*models.Task, error)
+
+	// List all mentors
+	ListMentors(ctx context.Context) ([]*models.User, error)
+
+	// List all mentor managers
+	ListMentorManagers(ctx context.Context) ([]*models.User, error)
 }

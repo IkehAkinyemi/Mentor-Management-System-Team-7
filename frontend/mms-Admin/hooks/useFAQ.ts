@@ -10,7 +10,7 @@ export const FetchFAQ = async () => {
       "Content-Type": "application/json",
       accept: "application/json",
 
-      Authorization: `Bearer${localStorage.getItem("token")}`
+      Authorization: `Bearer ${localStorage.getItem("token")}`
     }
   });
 };

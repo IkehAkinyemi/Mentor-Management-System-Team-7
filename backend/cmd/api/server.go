@@ -75,6 +75,7 @@ func (s *Server) setupRouter() {
 	router.Use(s.enableCORS(), loggerMiddleware())
 
 	router.POST("/api/v1/forgot_password", s.forgotPassword)
+	router.PATCH("/api/v1/reset_password", s.resetPassword)
 	router.POST("/api/v1/auth/login", s.login)
 	router.GET("/api/v1/auth/google/login", gin.WrapF(s.googleLogin))
 	router.GET("/api/v1/auth/google/callback", s.googleLoginCallback)
@@ -91,6 +92,12 @@ func (s *Server) setupRouter() {
 	authRoutes.POST("/api/v1/discussions/:id/add_comment", s.addComment)
 	authRoutes.GET("/api/v1/discussions", s.listDiscussions)
 	authRoutes.PATCH("/api/v1/discussions/:id", s.updateDiscussion)
+	authRoutes.POST("/api/v1/tasks", s.createTask)
+	authRoutes.GET("/api/v1/tasks", s.listTasks)
+	authRoutes.PATCH("/api/v1/tasks/:id", s.updateTask)
+	authRoutes.GET("/api/v1/tasks/:id", s.getTask)
+	authRoutes.GET("/api/v1/mentors", s.listMentors)
+	authRoutes.GET("/api/v1/mentor_managers", s.listMentorManagers)
 	authRoutes.POST("/api/v1/auth/logout", s.logout)
 
 	s.router = router

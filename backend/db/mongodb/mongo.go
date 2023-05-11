@@ -22,6 +22,9 @@ const (
 
 	// DiscussionsCollection defines Discussion collection name.
 	DiscussionsCollection = "discussion_forum"
+
+	// TasksCollection defines Tasks collection name.
+	TasksCollection = "tasks"
 )
 
 // MongoClient defines a Mongodb-based client.

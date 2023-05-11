@@ -4,6 +4,7 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -112,14 +113,19 @@ func (server *Server) forgotPassword(ctx *gin.Context) {
 		return
 	}
 
-	now := time.Now()
+	token, payload, err := server.tokenMaker.CreateToken(user.ID.Hex(), user.Role, 25*time.Minute)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to create reset password session"))
+		return
+	}
+
 	resetPassword, err := server.store.CreateUserAction(ctx, &models.UserAction{
 		UserID:     user.ID,
 		Email:      user.Contact.Email,
-		SecretCode: utils.RandomString(64), // TODO: Substitute value with a token-based string
+		SecretCode: utils.Extract(token),
 		ActionType: "reset_password",
-		CreatedAt:  now,
-		ExpiredAt:  now.Add(15 * time.Minute),
+		CreatedAt:  payload.IssuedAt,
+		ExpiredAt:  payload.ExpiredAt,
 	})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to create user action"))
@@ -167,6 +173,8 @@ func (server *Server) login(ctx *gin.Context) {
 	}
 	// Get user by email.
 	user, err := server.store.GetUserByEmail(ctx, req.Email)
+	fmt.Println("user", user)
+
 	if err != nil {
 		switch {
 		case errors.Is(err, db.ErrRecordNotFound):
@@ -193,7 +201,7 @@ func (server *Server) login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK,
 		envelop{
 			"data": gin.H{
-				"data":    user,
+				"user":    user,
 				"token":   token,
 				"payload": payload,
 			},
@@ -394,4 +402,89 @@ func (server *Server) logout(ctx *gin.Context) {
 		Str("request_method", ctx.Request.Method).
 		Str("request_path", ctx.Request.URL.Path).
 		Msg("logged out user")
+}
+
+type resetUserPasswordQuery struct {
+	ResetToken string `form:"reset_token" binding:"required"`
+}
+
+type resetUserRequest struct {
+	NewPassword     string `json:"new_password" binding:"required,min=8"`
+	ConfirmPassword string `json:"confirm_new_password" binding:"required,min=8,eqfield=NewPassword"`
+}
+
+func (server *Server) resetPassword(ctx *gin.Context) {
+	var reqQuery resetUserPasswordQuery
+	var reqBody resetUserRequest
+
+	if err := bindJSONWithValidation(ctx, ctx.ShouldBindQuery(&reqQuery), validator.New()); err != nil {
+		return
+	}
+
+	if err := bindJSONWithValidation(ctx, ctx.ShouldBindJSON(&reqBody), validator.New()); err != nil {
+		return
+	}
+
+	token := utils.Concat(reqQuery.ResetToken)
+
+	payload, err := server.tokenMaker.VerifyToken(token)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err.Error()))
+		return
+	}
+
+	exists, err := server.cache.IsSessionBlacklisted(ctx, payload.ID.String())
+	if err != nil || exists {
+		ctx.JSON(http.StatusUnauthorized, errorResponse("invalid token"))
+		return
+	}
+
+	hashedPassword, err := utils.HashedPassword(reqBody.NewPassword)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to hash password"))
+		return
+	}
+
+	arg := map[string]interface{}{
+		"hashed_password": hashedPassword,
+	}
+
+	_, err = server.store.UpdateUser(ctx, payload.UserID, arg)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to update user's password"))
+		return
+	}
+
+	expiredAt := payload.ExpiredAt
+	duration := time.Until(expiredAt)
+
+	err = server.cache.BlacklistSession(ctx, payload.ID.String(), duration)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to blacklist access token"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, envelop{"result": "password updated successfully"})
+}
+
+// List all mentors
+func (server *Server) listMentors(ctx *gin.Context) {
+	mentors, err := server.store.ListMentors(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to fetch mentors"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, envelop{"data": mentors})
+}
+
+// List all mentor managers
+func (server *Server) listMentorManagers(ctx *gin.Context) {
+	mentorManagers, err := server.store.ListMentorManagers(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to fetch mentor managers"))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, envelop{"data": mentorManagers})
 }
