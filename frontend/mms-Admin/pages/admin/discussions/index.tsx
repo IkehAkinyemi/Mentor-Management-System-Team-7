@@ -1,7 +1,8 @@
 import { NewPostModal } from "@/components";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 import React, { ReactElement, useState } from "react";
-import { commentIcon, bookmark, shareIcon, moreIcon , seemoreIcon, clockIcon } from "@/public";
+import { commentIcon, bookmark, shareIcon, moreIcon , clockIcon } from "@/public";
+import {  useFetchDiscussions } from "@/hooks/useFetchDiscussions";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,8 +23,28 @@ let dummy = [
   }
 ];
 
+
+interface discussion {
+  id: number;
+  title: string;
+  content: string;
+  owner_id : string,
+  updated_at: string;
+  created_at: string;
+
+
+  comments: [];
+
+}
+
+
 function Index() {
   let [isOpen, setIsOpen] = useState(false);
+
+
+  const { data, isLoading, isError, error } = useFetchDiscussions();
+
+  console.log(data?.data , 'discussions');
   return (
     <div>
       <NewPostModal isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -64,7 +85,7 @@ function Index() {
       </div>
 
       <div className="discussion">
-        {dummy.map(item => (
+        {data?.data.data.map((item:discussion) => (
           <div className="discussion__card border my-2 border-[#E6E6E6] rounded-[10px] px-[20px] py-[24px]">
             <div className="card__header mb-[15px] flex justify-between">
               <div className="post__author">
@@ -87,16 +108,16 @@ function Index() {
             </h3>
 
             <p className="text-mmsBlack5 text-base font-normal">
-              {item.description.length > 100
-                ? item.description.substring(0, 100) + "..."
-                : item.description}
+              {item.content.length > 100
+                ? item.content.substring(0, 100) + "..."
+                : item.content}
             </p>
 
             <div className="discussion__card___actions pt-[24px] flex items-center justify-between">
               <div className="first">
                 <div className="flex items-center space-x-[29px]">
                   <div className="comment cursor-pointer">
-                    <Link href={`/admin/discussions/comment`}>
+                    <Link href={`/admin/discussions/${item.id}`}>
                       <Image src={commentIcon} alt="comment" />
                     </Link>
                   </div>
@@ -112,7 +133,7 @@ function Index() {
               <div className="second flex items-center text-xs text-mmsBlack5 font-normal">
           <Image src={clockIcon} alt="clock" />
 
-                {item.date}
+                {item.created_at}
               </div>
             </div>
           </div>

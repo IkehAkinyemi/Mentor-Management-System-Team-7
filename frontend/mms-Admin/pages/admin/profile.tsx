@@ -9,38 +9,38 @@ const Profile = () => {
   const router = useRouter();
 
   const [userData, setUserData] = React.useState<any>("");
-  const [loading , setLoading] = React.useState<boolean>(false)
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   // const user = JSON.parse(userData)
 
   useEffect(() => {
     // Check if localStorage is available
 
-    setLoading(true)
+    setLoading(true);
     if (typeof localStorage !== "undefined") {
-
       // Get favorites from localStorage
       const userData = localStorage.getItem("user");
 
       if (userData) {
         setUserData(JSON.parse(userData));
-        setLoading(false)
+        setLoading(false);
       }
     }
   }, []);
 
   // console.log(userData.data.data, "user");
 
-
   // if(loading) return <div>Loading...</div>
+
+  console.log(userData.data, "user");
 
   function formatDate(isoDateString: string) {
     const date = new Date(isoDateString);
-  
-    const month = date.toLocaleString('default', { month: 'long' });
+
+    const month = date.toLocaleString("default", { month: "long" });
     const day = date.getDate();
     const year = date.getFullYear();
-  
+
     const formattedDate = `${month} ${day}, ${year}`;
     return formattedDate;
   }
@@ -50,34 +50,29 @@ const Profile = () => {
       <div className="mb-[60px] flex items-center justify-between">
         <div className="flex items-center">
           <div className="rounded-full cursor-pointer ">
-
-          {
+            {
               // userData && !userData?.data.data.profile_image_url === 'string' ?
-            //   <Image
-            //   src={userData && userData?.data.data.profile_image_url}
-            //   alt="avatar"
-            //   width={90}
-            //   height={90}
-            // />
-            // :
-            <Image
-            src="/images/personImg.png"
-            alt="avatar"
-            width={90}
-            height={90}
-          />
-          
-
+              //   <Image
+              //   src={userData && userData?.data.data.profile_image_url}
+              //   alt="avatar"
+              //   width={90}
+              //   height={90}
+              // />
+              // :
+              <Image
+                src="/images/personImg.png"
+                alt="avatar"
+                width={90}
+                height={90}
+              />
             }
-           
           </div>
           <div className="mx-5">
             <h3 className="text-mmsBlack2 font-semibold text-2xl flex space-x-2">
-            {userData && userData?.data.data.first_name }  ,
-            { userData && userData?.data.data.last_name} 
-
+              {userData && userData?.data.user.first_name} ,
+              {userData && userData?.data.user.last_name}
             </h3>
-            <p>{userData && userData?.data.data.role}</p>
+            <p>{userData && userData?.data.user.role}</p>
           </div>
         </div>
         <div>
@@ -94,51 +89,43 @@ const Profile = () => {
         <div>
           <h2 className="text-mmsBlack2 font-semibold mb-3 text-2xl">About</h2>
           <p className="p-5 bg-green11 border border-mmsPry10 text-mmsBlack3 text-base">
-            {userData && userData?.data.data?.about}
+            {userData && userData?.data.user?.about}
           </p>
         </div>
 
         <div className="user__info">
-
           <div className="mt-[50px]">
             <h2 className="text-mmsBlack2 font-semibold mb-3 text-xl">
-              Location : <span className="text-mmsBlack5 text-base">
-              {userData && userData?.data.data.contact.city } , 
-              {userData && userData?.data.data.contact.country }
-
+              Location :{" "}
+              <span className="text-mmsBlack5 text-base">
+                {userData && userData?.data.user.contact.city} ,
+                {userData && userData?.data.user.contact.country}
               </span>
             </h2>
-
 
             <h2 className="text-mmsBlack2 font-semibold mb-5 text-xl">
-            Email : <span className="text-mmsBlack5 text-base">
-              {userData && userData?.data.data.contact.email } 
-      
-
+              Email :{" "}
+              <span className="text-mmsBlack5 text-base">
+                {userData && userData?.data.user.contact.email}
               </span>
             </h2>
-
 
             <h2 className="text-mmsBlack2 font-semibold mb-5 text-xl">
-            Website : <span className="text-mmsBlack5 text-base">
-              {userData && userData?.data.data.contact.website } 
-      
-
+              Website :{" "}
+              <span className="text-mmsBlack5 text-base">
+                {userData && userData?.data.user.contact.website}
               </span>
             </h2>
-
 
             <h2 className="text-mmsBlack2 font-semibold mb-5 text-xl">
-            Members Since  : <span className="text-mmsBlack5 text-base">
-              {userData && formatDate(userData?.data.data.created_at) }
-
-      
-
+              Members Since :{" "}
+              <span className="text-mmsBlack5 text-base">
+                {userData && formatDate(userData?.data.user.created_at)}
               </span>
             </h2>
-            </div>
+          </div>
         </div>
-    
+
         <div className="mt-[50px]">
           <h2 className="text-mmsBlack2 font-semibold mb-3 text-2xl">Social</h2>
           <div className="flex items-center space-x-4">
@@ -150,9 +137,7 @@ const Profile = () => {
                 alt="github"
               />
               <span className="font-semibold text-xl text-mmsBlack3 ml-3">
-              {userData && userData?.data.data.socials?.github_url.value
-} 
-
+                {userData && userData?.data.user.socials?.github_url.value}
               </span>
             </div>
             <div className="flex items-center bg-mmsPry10 py-[5px] px-[11px] rounded-[5px] w-[50%]">
@@ -163,10 +148,7 @@ const Profile = () => {
                 alt="github"
               />
               <span className="font-semibold text-xl text-mmsBlack3 ml-3">
-              {userData && userData?.data.data.socials?.linkedin_url
-.value
-} 
-
+                {userData && userData?.data.user.socials?.linkedin_url.value}
               </span>
             </div>
           </div>
@@ -180,7 +162,7 @@ const Profile = () => {
               alt="github"
             />
             <span className="font-semibold text-xl text-mmsBlack3 ml-3">
-            {userData && userData?.data.data.socials?.twitter_url.value}
+              {userData && userData?.data.user.socials?.twitter_url.value}
             </span>
           </div>
           <div className="flex items-center rounded-[5px] bg-mmsPry10 py-[5px] px-[11px] w-[50%]">
@@ -191,7 +173,7 @@ const Profile = () => {
               alt="github"
             />
             <span className="font-semibold text-xl text-mmsBlack3 ml-3">
-            {userData && userData?.data.data.socials?.instagram_url.value}
+              {userData && userData?.data.user.socials?.instagram_url.value}
             </span>
           </div>
         </div>

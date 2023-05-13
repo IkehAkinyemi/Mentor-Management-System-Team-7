@@ -9,6 +9,27 @@ import {
 } from "@/public";
 import Image from "next/image";
 import { Link } from "react-feather";
+import { useFetchDiscussions } from "../../../hooks/useDiscussion";
+
+import { useRouter } from "next/router";
+
+interface discussion {
+  id: number;
+  title: string;
+  content: string;
+  owner_id: string;
+  updated_at: string;
+  created_at: string;
+  creator_details: {};
+  comments: [];
+}
+
+interface comment {
+  full_name: string;
+  content: string;
+  owner_id: string;
+  created_at: string;
+}
 
 let dummy = [
   {
@@ -19,12 +40,23 @@ let dummy = [
     date: "2021-08-12"
   }
 ];
+
 function Comment() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { data, isLoading, isError, error } = useFetchDiscussions(id);
+
+  console.log(data?.data.data, "discussions");
+
   return (
     <div>
       <div className="discussion">
-        {dummy.map(item => (
-          <div className="discussion__card border my-2 border-[#E6E6E6] rounded-[10px] px-[20px] py-[24px]">
+        {data?.data.data.map((item: discussion) => (
+          <div
+            className="discussion__card border my-2 border-[#E6E6E6] rounded-[10px] px-[20px] py-[24px]"
+            key={item.id}
+          >
             <div className="card__header mb-[15px] flex justify-between">
               <div className="post__author">
                 <h1 className="text-mmsBlack2 font-semibold text-xl">
@@ -46,9 +78,9 @@ function Comment() {
             </h3>
 
             <p className="text-mmsBlack5 text-base font-normal">
-              {item.description.length > 100
-                ? item.description.substring(0, 100) + "..."
-                : item.description}
+              {item.content.length > 100
+                ? item.content.substring(0, 100) + "..."
+                : item.content}
             </p>
 
             <div className="discussion__card___actions pt-[24px] flex items-center justify-between">
