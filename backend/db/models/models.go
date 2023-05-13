@@ -12,7 +12,8 @@ import (
 // User represents a user's profile & settings.
 type User struct {
 	ID                primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
-	FullName          string             `bson:"full_name,omitempty" json:"full_name,omitempty"`
+	FirstName         string             `bson:"first_name,omitempty" json:"first_name,omitempty"`
+	LastName          string             `bson:"last_name,omitempty" json:"last_name,omitempty"`
 	Role              string             `bson:"role,omitempty" json:"role,omitempty"`
 	About             string             `bson:"about,omitempty" json:"about,omitempty"`
 	Contact           Contact            `bson:"contact,omitempty" json:"contact,omitempty"`
@@ -26,9 +27,10 @@ type User struct {
 
 // Contact represents user's contact details.
 type Contact struct {
-	Email    string `bson:"email,omitempty" json:"email,omitempty"`
-	Website  string `bson:"website,omitempty" json:"website,omitempty"`
-	Location string `bson:"location,omitempty" json:"location,omitempty"`
+	Email   string `bson:"email,omitempty" json:"email,omitempty"`
+	Website string `bson:"website,omitempty" json:"website,omitempty"`
+	Country string `bson:"country,omitempty" json:"country,omitempty"`
+	City    string `bson:"city,omitempty" json:"city,omitempty"`
 }
 
 // SocialMediaURL represents the value and settings for socials.
@@ -88,8 +90,46 @@ type UserAction struct {
 
 // Faq represents faq details
 type Faq struct {
-	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	Question string             `bson:"question" json:"question"`
-	Answer   string             `bson:"answer" json:"answer"`
-	Category string             `bson:"category" json:"category"`
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Question string             `bson:"question,omitempty" json:"question,omitempty"`
+	Answer   string             `bson:"answer,omitempty" json:"answer,omitempty"`
+	Category string             `bson:"category,omitempty" json:"category,omitempty"`
+}
+
+// Discussion represents the data model for a discussion forum
+type Discussion struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Title     string             `bson:"title,omitempty" json:"title,omitempty"`
+	Content   string             `bson:"content,omitempty" json:"content,omitempty"`
+	CreatedAt time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
+	UpdatedAt time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty"`
+	Creator   CreatorDetails     `bson:"creator_details,omitempty" json:"creator_details,omitempty"`
+	Comments  []Comment          `bson:"comments,omitempty" json:"comments,omitempty"`
+}
+
+// CreatorDetails represent the data model of user
+// that created a discussion
+type CreatorDetails struct {
+	ID              primitive.ObjectID `bson:"id,omitempty" json:"id,omitempty"`
+	ProfileImageURL string             `bson:"profile_image_url,omitempty" json:"profile_image_url,omitempty"`
+	FullName        string             `bson:"full_name,omitempty" json:"full_name,omitempty"`
+}
+
+// Comment represents the data model for a comment
+type Comment struct {
+	OwnerID         primitive.ObjectID `bson:"owner_id,omitempty" json:"owner_id,omitempty"`
+	FullName        string             `bson:"full_name,omitempty" json:"full_name,omitempty"`
+	Content         string             `bson:"content,omitempty" json:"content,omitempty"`
+	CreatedAt       time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
+	ProfileImageURL string             `bson:"profile_image_url,omitempty" json:"profile_image_url,omitempty"`
+}
+
+// Task represents the data model for a task.
+type Task struct {
+	ID             primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
+	Title          string               `bson:"title,omitempty" json:"title,omitempty"`
+	Details        string               `bson:"details,omitempty" json:"details,omitempty"`
+	MentorManagers []primitive.ObjectID `bson:"mentor_managers,omitempty" json:"mentor_managers,omitempty"`
+	Mentors        []primitive.ObjectID `bson:"mentors,omitempty" json:"mentors,omitempty"`
+	CreatedAt      time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty"`
 }

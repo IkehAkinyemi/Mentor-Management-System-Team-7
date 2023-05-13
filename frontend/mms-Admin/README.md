@@ -6,6 +6,7 @@ coordination of mentors needed to execute projects, ranging from recruitment to 
 [hosted link](https://mentor-management-system-team-7-fj6dqhmgi-codehouze.vercel.app/)
 
 [Contributor's wiki](https://github.com/ALCOpenSource/Mentor-Management-System-Team-7/wiki)
+
 ## Getting Started
 
 Install dependencies and run the development server:
@@ -16,13 +17,13 @@ npm install
 npm run dev
 ```
 
-Open  with your browser to see the result.
+Open with your browser to see the result.
 
 ## Daily Development
 
 > Please remember to **always** pull the latest changes.
 
-### *Commiting*
+### _Commiting_
 
 Commits must be formated follows:
 
@@ -38,8 +39,28 @@ eg: git commit -m "feat: add new feature"
 
 ## Tech
 
-*   [Next.js](https://nextjs.org/)
-*   [TypeScript](https://www.typescriptlang.org/)
-*   [Tailwind CSS](https://tailwindcss.com/)
-*   [DaisyUI](https://daisyui.com/)
-*   [SWR](https://swr.vercel.app/)
+# [Next.js](https://nextjs.org/)
+
+# [TypeScript](https://www.typescriptlang.org/)
+
+# [Tailwind CSS](https://tailwindcss.com/)
+
+# [DaisyUI](https://daisyui.com/)
+
+# [SWR](https://swr.vercel.app/)
+
+## Generate OpenAPi Client
+
+Install OpenApiGenerator cli
+
+```
+npm install @openapitools/openapi-generator-cli -g
+
+```
+
+To generate openApi library, run the following command
+
+```
+openapi-generator-cli generate -g typescript-axios --additional-properties=prependFormOrBodyParameters=true -o lib/httpGen -i swagger.yaml --skip-validate-spec
+
+```

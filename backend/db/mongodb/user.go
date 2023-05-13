@@ -51,7 +51,6 @@ func (mc *MongoClient) GetUserByID(ctx context.Context, id string) (*models.User
 	return mc.getUser(ctx, filter)
 }
 
-
 func (mc *MongoClient) getUser(ctx context.Context, filter bson.M) (*models.User, error) {
 	var user models.User
 	err := mc.client.Database(DBName).Collection(UsersCollection).
@@ -102,5 +101,30 @@ func (mc *MongoClient) DeleteUser(ctx context.Context, id string) (*mongo.Delete
 	return mc.client.Database(DBName).Collection(UsersCollection).DeleteOne(ctx, filter)
 }
 
+// ListMentors retrieves a list of all mentors
+func (mc *MongoClient) ListMentors(ctx context.Context) ([]*models.User, error) {
+	var users []*models.User
+	filter := bson.M{"role": "Mentor"}
+	cursor, err := mc.client.Database(DBName).Collection(UsersCollection).Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	if err = cursor.All(ctx, &users); err != nil {
+		return nil, err
+	}
+	return users, nil
+}
 
-
+// ListMentorManagers retrieves a list of all mentor managers
+func (mc *MongoClient) ListMentorManagers(ctx context.Context) ([]*models.User, error) {
+	var users []*models.User
+	filter := bson.M{"role": "Mentor Manager (MM)"}
+	cursor, err := mc.client.Database(DBName).Collection(UsersCollection).Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	if err = cursor.All(ctx, &users); err != nil {
+		return nil, err
+	}
+	return users, nil
+}

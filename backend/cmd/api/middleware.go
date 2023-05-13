@@ -20,33 +20,39 @@ const (
 	authorizationPayloadKey = "authorization_payload"
 )
 
-func authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
+func (server *Server) authMiddleware(tokenMaker token.Maker) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		authorizationHeader := ctx.GetHeader(authorizationHeaderKey)
 		if authorizationHeader == "" {
 			err := errors.New("authorization header is not provided")
-			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err.Error()))
 			return
 		}
 
 		fields := strings.Fields(authorizationHeader)
 		if len(fields) < 2 {
 			err := errors.New("invalid authorization header format")
-			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err.Error()))
 			return
 		}
 
 		authorizationType := strings.ToLower(fields[0])
 		if authorizationType != authorizationTypeBearer {
 			err := fmt.Errorf("unsupported authorization type %s", authorizationType)
-			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err.Error()))
 			return
 		}
 
 		accessToken := fields[1]
 		payload, err := tokenMaker.VerifyToken(accessToken)
 		if err != nil {
-			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err))
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse(err.Error()))
+			return
+		}
+
+		exists, err := server.cache.IsSessionBlacklisted(ctx, payload.ID.String())
+		if err != nil || exists {
+			ctx.AbortWithStatusJSON(http.StatusUnauthorized, errorResponse("invalid token"))
 			return
 		}
 
@@ -97,5 +103,34 @@ func loggerMiddleware() gin.HandlerFunc {
 			Str("status_text", http.StatusText(c.Writer.Status())).
 			Dur("duration", duration).
 			Msg("received an HTTP request")
+	}
+}
+
+// enableCORS enables cross-site requests for web user-agents.
+func (server *Server) enableCORS() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Add("Vary", "Origin")
+		c.Writer.Header().Add("Vary", "Access-Control-Request-Method")
+
+		origin := c.Request.Header.Get("Origin")
+
+		// Preflight
+		if origin != "" && len(server.config.CorsTrustedOrigins) != 0 {
+			for _, v := range server.config.CorsTrustedOrigins {
+				if origin == v || true {
+					c.Header("Access-Control-Allow-Origin", "*")
+
+					if c.Request.Method == http.MethodOptions && c.Request.Header.Get("Access-Control-Request-Method") != "" {
+						c.Writer.Header().Add("Access-Control-Allow-Methods", "OPTIONS, PUT, PATCH, DELETE")
+						c.Writer.Header().Add("Access-Control-Allow-Headers", "Authorization, Content-Type")
+
+						c.Status(http.StatusOK)
+						return
+					}
+				}
+			}
+		}
+
+		c.Next()
 	}
 }
