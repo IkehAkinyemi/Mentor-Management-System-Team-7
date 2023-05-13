@@ -46,7 +46,7 @@ export interface ChangePasswordRequest {
      * @type {string}
      * @memberof ChangePasswordRequest
      */
-    'confirm_password'?: string;
+    'confirm_new_password'?: string;
 }
 /**
  * 
@@ -402,6 +402,25 @@ export interface LoginResponseDataPayload {
 /**
  * 
  * @export
+ * @interface ResetPasswordPatchRequest
+ */
+export interface ResetPasswordPatchRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ResetPasswordPatchRequest
+     */
+    'new_password'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ResetPasswordPatchRequest
+     */
+    'confirm_new_password'?: string;
+}
+/**
+ * 
+ * @export
  * @interface Socials
  */
 export interface Socials {
@@ -448,6 +467,80 @@ export interface SocialsGithubUrl {
      * @memberof SocialsGithubUrl
      */
     'is_visible'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface Task
+ */
+export interface Task {
+    /**
+     * 
+     * @type {string}
+     * @memberof Task
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Task
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Task
+     */
+    'details'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Task
+     */
+    'created_at'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Task
+     */
+    'mentors'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Task
+     */
+    'mentor_managers'?: Array<string>;
+}
+/**
+ * 
+ * @export
+ * @interface TasksPostRequest
+ */
+export interface TasksPostRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof TasksPostRequest
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TasksPostRequest
+     */
+    'details'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TasksPostRequest
+     */
+    'mentors'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TasksPostRequest
+     */
+    'mentor_managers'?: Array<string>;
 }
 /**
  * 
@@ -611,26 +704,26 @@ export interface UsersIdChangePasswordPatch200Response {
 /**
  * 
  * @export
- * @interface UsersIdPatch200Response
+ * @interface UsersPatch200Response
  */
-export interface UsersIdPatch200Response {
+export interface UsersPatch200Response {
     /**
      * 
-     * @type {UsersIdPatch200ResponseData}
-     * @memberof UsersIdPatch200Response
+     * @type {UsersPatch200ResponseData}
+     * @memberof UsersPatch200Response
      */
-    'data'?: UsersIdPatch200ResponseData;
+    'data'?: UsersPatch200ResponseData;
 }
 /**
  * 
  * @export
- * @interface UsersIdPatch200ResponseData
+ * @interface UsersPatch200ResponseData
  */
-export interface UsersIdPatch200ResponseData {
+export interface UsersPatch200ResponseData {
     /**
      * 
      * @type {User}
-     * @memberof UsersIdPatch200ResponseData
+     * @memberof UsersPatch200ResponseData
      */
     'user'?: User;
 }
@@ -844,7 +937,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             assertParamExists('discussionsIdAddCommentPost', 'comment', comment)
             // verify required parameter 'id' is not null or undefined
             assertParamExists('discussionsIdAddCommentPost', 'id', id)
-            const localVarPath = `/discussions/:id/add_comment`
+            const localVarPath = `/discussions/{id}/add_comment`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -887,7 +980,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             assertParamExists('discussionsIdPatch', 'titleAndContent', titleAndContent)
             // verify required parameter 'id' is not null or undefined
             assertParamExists('discussionsIdPatch', 'id', id)
-            const localVarPath = `/discussions/:id`
+            const localVarPath = `/discussions/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1063,6 +1156,258 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary List all mentor managers 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mentorMangersGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/mentor_mangers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary List all mentors 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mentorsGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/mentors`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Reset user\'s password
+         * @param {ResetPasswordPatchRequest} newPasswordCredentials Current password and new password of the user to update
+         * @param {any} resetToken Signed token to reset password
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        resetPasswordPatch: async (newPasswordCredentials: ResetPasswordPatchRequest, resetToken: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'newPasswordCredentials' is not null or undefined
+            assertParamExists('resetPasswordPatch', 'newPasswordCredentials', newPasswordCredentials)
+            // verify required parameter 'resetToken' is not null or undefined
+            assertParamExists('resetPasswordPatch', 'resetToken', resetToken)
+            const localVarPath = `/reset_password`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (resetToken !== undefined) {
+                localVarQueryParameter['reset_token'] = resetToken;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(newPasswordCredentials, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary List all tasks for a user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/tasks`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get a task
+         * @param {string} id Task ID to get
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksIdGet: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('tasksIdGet', 'id', id)
+            const localVarPath = `/tasks/:id`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Update a task
+         * @param {TasksPostRequest} titleAndContent The task new title and content
+         * @param {string} id Task ID to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksIdPatch: async (titleAndContent: TasksPostRequest, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'titleAndContent' is not null or undefined
+            assertParamExists('tasksIdPatch', 'titleAndContent', titleAndContent)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('tasksIdPatch', 'id', id)
+            const localVarPath = `/tasks/:id`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(titleAndContent, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Create a task
+         * @param {TasksPostRequest} titleAndContent Title and content of the task
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksPost: async (titleAndContent: TasksPostRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'titleAndContent' is not null or undefined
+            assertParamExists('tasksPost', 'titleAndContent', titleAndContent)
+            const localVarPath = `/tasks`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(titleAndContent, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Changer user\'s password
          * @param {ChangePasswordRequest} passwords Current password and new password of the user to update
          * @param {string} id ID of the user
@@ -1074,7 +1419,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             assertParamExists('usersIdChangePasswordPatch', 'passwords', passwords)
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersIdChangePasswordPatch', 'id', id)
-            const localVarPath = `/users/:id/change_password`
+            const localVarPath = `/users/{id}/change_password`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1111,10 +1456,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersIdPatch: async (usersInfo: UpdateUserResquest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersPatch: async (usersInfo: UpdateUserResquest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'usersInfo' is not null or undefined
-            assertParamExists('usersIdPatch', 'usersInfo', usersInfo)
-            const localVarPath = `/users/:id`;
+            assertParamExists('usersPatch', 'usersInfo', usersInfo)
+            const localVarPath = `/users`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1277,6 +1622,82 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary List all mentor managers 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async mentorMangersGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<User>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.mentorMangersGet(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary List all mentors 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async mentorsGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<User>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.mentorsGet(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Reset user\'s password
+         * @param {ResetPasswordPatchRequest} newPasswordCredentials Current password and new password of the user to update
+         * @param {any} resetToken Signed token to reset password
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async resetPasswordPatch(newPasswordCredentials: ResetPasswordPatchRequest, resetToken: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdChangePasswordPatch200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.resetPasswordPatch(newPasswordCredentials, resetToken, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary List all tasks for a user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Task>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tasksGet(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get a task
+         * @param {string} id Task ID to get
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksIdGet(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tasksIdGet(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Update a task
+         * @param {TasksPostRequest} titleAndContent The task new title and content
+         * @param {string} id Task ID to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksIdPatch(titleAndContent: TasksPostRequest, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Task>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tasksIdPatch(titleAndContent, id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Create a task
+         * @param {TasksPostRequest} titleAndContent Title and content of the task
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async tasksPost(titleAndContent: TasksPostRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Task>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.tasksPost(titleAndContent, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @summary Changer user\'s password
          * @param {ChangePasswordRequest} passwords Current password and new password of the user to update
          * @param {string} id ID of the user
@@ -1294,8 +1715,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersIdPatch(usersInfo: UpdateUserResquest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdPatch200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdPatch(usersInfo, options);
+        async usersPatch(usersInfo: UpdateUserResquest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersPatch200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPatch(usersInfo, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1421,6 +1842,75 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary List all mentor managers 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mentorMangersGet(options?: any): AxiosPromise<Array<User>> {
+            return localVarFp.mentorMangersGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary List all mentors 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mentorsGet(options?: any): AxiosPromise<Array<User>> {
+            return localVarFp.mentorsGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Reset user\'s password
+         * @param {ResetPasswordPatchRequest} newPasswordCredentials Current password and new password of the user to update
+         * @param {any} resetToken Signed token to reset password
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        resetPasswordPatch(newPasswordCredentials: ResetPasswordPatchRequest, resetToken: any, options?: any): AxiosPromise<UsersIdChangePasswordPatch200Response> {
+            return localVarFp.resetPasswordPatch(newPasswordCredentials, resetToken, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary List all tasks for a user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksGet(options?: any): AxiosPromise<Array<Task>> {
+            return localVarFp.tasksGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get a task
+         * @param {string} id Task ID to get
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksIdGet(id: string, options?: any): AxiosPromise<void> {
+            return localVarFp.tasksIdGet(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Update a task
+         * @param {TasksPostRequest} titleAndContent The task new title and content
+         * @param {string} id Task ID to update
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksIdPatch(titleAndContent: TasksPostRequest, id: string, options?: any): AxiosPromise<Task> {
+            return localVarFp.tasksIdPatch(titleAndContent, id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Create a task
+         * @param {TasksPostRequest} titleAndContent Title and content of the task
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        tasksPost(titleAndContent: TasksPostRequest, options?: any): AxiosPromise<Task> {
+            return localVarFp.tasksPost(titleAndContent, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Changer user\'s password
          * @param {ChangePasswordRequest} passwords Current password and new password of the user to update
          * @param {string} id ID of the user
@@ -1437,8 +1927,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersIdPatch(usersInfo: UpdateUserResquest, options?: any): AxiosPromise<UsersIdPatch200Response> {
-            return localVarFp.usersIdPatch(usersInfo, options).then((request) => request(axios, basePath));
+        usersPatch(usersInfo: UpdateUserResquest, options?: any): AxiosPromise<UsersPatch200Response> {
+            return localVarFp.usersPatch(usersInfo, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1585,6 +2075,89 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
+     * @summary List all mentor managers 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public mentorMangersGet(options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).mentorMangersGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary List all mentors 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public mentorsGet(options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).mentorsGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Reset user\'s password
+     * @param {ResetPasswordPatchRequest} newPasswordCredentials Current password and new password of the user to update
+     * @param {any} resetToken Signed token to reset password
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public resetPasswordPatch(newPasswordCredentials: ResetPasswordPatchRequest, resetToken: any, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).resetPasswordPatch(newPasswordCredentials, resetToken, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary List all tasks for a user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public tasksGet(options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).tasksGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get a task
+     * @param {string} id Task ID to get
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public tasksIdGet(id: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).tasksIdGet(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Update a task
+     * @param {TasksPostRequest} titleAndContent The task new title and content
+     * @param {string} id Task ID to update
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public tasksIdPatch(titleAndContent: TasksPostRequest, id: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).tasksIdPatch(titleAndContent, id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Create a task
+     * @param {TasksPostRequest} titleAndContent Title and content of the task
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public tasksPost(titleAndContent: TasksPostRequest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).tasksPost(titleAndContent, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Changer user\'s password
      * @param {ChangePasswordRequest} passwords Current password and new password of the user to update
      * @param {string} id ID of the user
@@ -1604,8 +2177,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public usersIdPatch(usersInfo: UpdateUserResquest, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).usersIdPatch(usersInfo, options).then((request) => request(this.axios, this.basePath));
+    public usersPatch(usersInfo: UpdateUserResquest, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).usersPatch(usersInfo, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -14,12 +14,12 @@ import { useFormik } from "formik";
 import { UPDATE_PROFILE_SCHEMA } from "@/lib/schemas/authSchema";
 
 const General = () => {
-  const user = JSON.parse(localStorage?.getItem("user")!);
-  const userId = user.data.data.id;
+  // const user = JSON.parse(localStorage?.getItem("user")!);
+  // const userId = user.data.data.id;
   const profileApi = new DefaultApi(undefined, API_URL, httpClient);
   const updateProfileMutation = useMutation(
     async (data: UpdateUserResquest) =>
-      await profileApi.usersIdPatch(data, userId),
+      await profileApi.usersPatch(data),
     {
       onSuccess: () => {
         console.log("success");
