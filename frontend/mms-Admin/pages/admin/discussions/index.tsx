@@ -1,10 +1,17 @@
 import { NewPostModal } from "@/components";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 import React, { ReactElement, useState } from "react";
-import { commentIcon, bookmark, shareIcon, moreIcon , clockIcon } from "@/public";
-import {  useFetchDiscussions } from "@/hooks/useFetchDiscussions";
+import {
+  commentIcon,
+  bookmark,
+  shareIcon,
+  moreIcon,
+  clockIcon
+} from "@/public";
+import { useFetchDiscussions } from "@/hooks/useFetchDiscussions";
 import Image from "next/image";
 import Link from "next/link";
+import { ClipLoader } from "react-spinners";
 
 let dummy = [
   {
@@ -23,28 +30,32 @@ let dummy = [
   }
 ];
 
-
 interface discussion {
   id: number;
   title: string;
   content: string;
-  owner_id : string,
+  owner_id: string;
   updated_at: string;
   created_at: string;
 
-
   comments: [];
-
 }
-
 
 function Index() {
   let [isOpen, setIsOpen] = useState(false);
 
-
   const { data, isLoading, isError, error } = useFetchDiscussions();
 
-  console.log(data?.data , 'discussions');
+  console.log(data?.data, "discussions");
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center my-20">
+        <ClipLoader color="#36d7b7" />;
+      </div>
+    );
+  }
+
   return (
     <div>
       <NewPostModal isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -85,59 +96,64 @@ function Index() {
       </div>
 
       <div className="discussion">
-        {data?.data.data.map((item:discussion) => (
-          <div className="discussion__card border my-2 border-[#E6E6E6] rounded-[10px] px-[20px] py-[24px]">
-            <div className="card__header mb-[15px] flex justify-between">
-              <div className="post__author">
-                <h1 className="text-mmsBlack2 font-semibold text-xl">
-                  Evergreen x
-                </h1>
+        {Array.isArray(data?.data.data) &&
+          data?.data?.data?.map((item: discussion) => (
+            <div className="discussion__card border my-2 border-[#E6E6E6] rounded-[10px] px-[20px] py-[24px]">
+              <div className="card__header mb-[15px] flex justify-between">
+                <div className="post__author">
+                  <h1 className="text-mmsBlack2 font-semibold text-xl">
+                    Evergreen x
+                  </h1>
 
-                <h5 className="text-mmsBlack5 font-normal text-sm">
-                  Mentor Manager
-                </h5>
-              </div>
+                  <h5 className="text-mmsBlack5 font-normal text-sm">
+                    Mentor Manager
+                  </h5>
+                </div>
 
-              <div className="more">
-                <Image src={moreIcon} alt="more" />
-              </div>
-            </div>
-
-            <h3 className="text-xl font-normal text-mmsBlack2 ">
-              {item.title}
-            </h3>
-
-            <p className="text-mmsBlack5 text-base font-normal">
-              {item.content.length > 100
-                ? item.content.substring(0, 100) + "..."
-                : item.content}
-            </p>
-
-            <div className="discussion__card___actions pt-[24px] flex items-center justify-between">
-              <div className="first">
-                <div className="flex items-center space-x-[29px]">
-                  <div className="comment cursor-pointer">
-                    <Link href={`/admin/discussions/${item.id}`}>
-                      <Image src={commentIcon} alt="comment" />
-                    </Link>
-                  </div>
-                  <div className="bookmark cursor-pointer">
-                    <Image src={bookmark} alt="bookmark" />
-                  </div>
-                  <div className="share cursor-pointer">
-                    <Image src={shareIcon} alt="share" />
-                  </div>
+                <div className="more">
+                  <Image src={moreIcon} alt="more" />
                 </div>
               </div>
 
-              <div className="second flex items-center text-xs text-mmsBlack5 font-normal">
-          <Image src={clockIcon} alt="clock" />
+              <h3 className="text-xl font-normal text-mmsBlack2 ">
+                {item.title}
+              </h3>
 
-                {item.created_at}
+              <p className="text-mmsBlack5 text-base font-normal">
+                {item.content.length > 100
+                  ? item.content.substring(0, 100) + "..."
+                  : item.content}
+              </p>
+
+              <div className="discussion__card___actions pt-[24px] flex items-center justify-between">
+                <div className="first">
+                  <div className="flex items-center space-x-[29px]">
+                    <div className="comment cursor-pointer">
+                      <Link href={`/admin/discussions/${item.id}`}>
+                        <Image src={commentIcon} alt="comment" />
+                      </Link>
+                    </div>
+                    <div className="bookmark cursor-pointer">
+                      <Image src={bookmark} alt="bookmark" />
+                    </div>
+                    <div className="share cursor-pointer">
+                      <Image src={shareIcon} alt="share" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="second flex items-center text-xs text-mmsBlack5 font-normal">
+                  <Image src={clockIcon} alt="clock" />
+
+                  {new Date(item.created_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+                  })}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );

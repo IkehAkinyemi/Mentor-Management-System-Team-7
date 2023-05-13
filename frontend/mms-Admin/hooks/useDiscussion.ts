@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import axios from "axios";
+import { GetServerSideProps, NextPageContext } from "next";
 
 export const FetchDiscussion = async (id: any) => {
   return await axios.get(
@@ -17,11 +18,12 @@ export const FetchDiscussion = async (id: any) => {
   );
 };
 
-export const useFetchDiscussions = (id: any) => {
+export const useFetchDiscussion = (id: any) => {
   const queryKey = ["Discussions"];
   return useQuery(queryKey, () => FetchDiscussion(id), {
     refetchOnWindowFocus: false,
     retry: 1,
-    retryDelay: 1000
+    retryDelay: 1000,
+    cacheTime: 0
   });
 };

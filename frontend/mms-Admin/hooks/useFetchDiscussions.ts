@@ -26,6 +26,8 @@ export const useFetchDiscussions = () => {
   return useQuery(queryKey, () => FetchDiscussions(), {
     refetchOnWindowFocus: false,
     retry: 1,
-    retryDelay: 1000
+    retryDelay: 1000, 
+    
+  
   });
 };
