@@ -128,52 +128,84 @@ const Profile = () => {
 
         <div className="mt-[50px]">
           <h2 className="text-mmsBlack2 font-semibold mb-3 text-2xl">Social</h2>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center  bg-mmsPry10 py-[5px] px-[11px] rouned-[5px] w-[50%]">
+          <div className="flex items-center lg:space-x-4 space-y-2 lg:space-y-0 space-x-0  lg:flex-row flex-col  ">
+            <div className="flex items-center flex-nowrap  bg-mmsPry10 py-[5px] px-[11px] rouned-[5px] lg:w-[50%] w-full">
               <Image
                 src="/images/svgs/githubIcon.svg"
                 width={24}
                 height={23}
                 alt="github"
               />
-              <span className="font-semibold text-xl text-mmsBlack3 ml-3">
-                {userData && userData?.data.user.socials?.github_url.value}
+              <span className="font-semibold text-base lg:text-xl text-mmsBlack3 ml-3">
+                <a
+                  href={
+                    userData && userData?.data.user.socials?.github_url.value
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {userData && userData?.data.user.socials?.github_url.value}
+                </a>
               </span>
             </div>
-            <div className="flex items-center bg-mmsPry10 py-[5px] px-[11px] rounded-[5px] w-[50%]">
+            <div className="flex items-center flex-nowrap bg-mmsPry10 py-[5px] px-[11px] rounded-[5px] lg:w-[50%] w-full">
               <Image
                 src="/images/svgs/linkedinIcon.svg"
                 width={24}
                 height={23}
                 alt="github"
               />
-              <span className="font-semibold text-xl text-mmsBlack3 ml-3">
-                {userData && userData?.data.user.socials?.linkedin_url.value}
+              <span className="font-semibold text-base lg:text-xl text-mmsBlack3 ml-3">
+                <a
+                  href={
+                    userData && userData?.data.user.socials?.linkedin_url.value
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {userData && userData?.data.user.socials?.linkedin_url.value}
+                </a>
               </span>
             </div>
           </div>
         </div>
-        <div className="flex items-center rounded-[5px] mt-[33px] space-x-4">
-          <div className="flex items-center bg-mmsPry10 py-[5px] px-[11px] w-[50%]">
+        <div className="flex items-center lg:flex-row flex-col rounded-[5px] mt-[33px] lg:space-x-4 space-y-2 lg:space-y-0 space-x-0">
+          <div className="flex items-center flex-nowrap bg-mmsPry10 py-[5px] px-[11px] lg:w-[50%] w-full">
             <Image
               src="/images/svgs/twitterIcon.svg"
               width={24}
               height={23}
               alt="github"
             />
-            <span className="font-semibold text-xl text-mmsBlack3 ml-3">
-              {userData && userData?.data.user.socials?.twitter_url.value}
+            <span className="font-semibold text-base lg:text-xl text-mmsBlack3 ml-3">
+              <a
+                href={
+                  userData && userData?.data.user.socials?.twitter_url.value
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                {userData && userData?.data.user.socials?.twitter_url.value}
+              </a>
             </span>
           </div>
-          <div className="flex items-center rounded-[5px] bg-mmsPry10 py-[5px] px-[11px] w-[50%]">
+          <div className="flex items-center flex-nowrap rounded-[5px] bg-mmsPry10 py-[5px] px-[11px] lg:w-[50%] w-full">
             <Image
               src="/images/svgs/instagramIcon.svg"
               width={24}
               height={23}
               alt="github"
             />
-            <span className="font-semibold text-xl text-mmsBlack3 ml-3">
-              {userData && userData?.data.user.socials?.instagram_url.value}
+            <span className="font-semibold text-base lg:text-xl text-mmsBlack3 ml-3">
+              <a
+                href={
+                  userData && userData?.data.user.socials?.instagram_url.value
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                {userData && userData?.data.user.socials?.instagram_url.value}
+              </a>
             </span>
           </div>
         </div>
