@@ -113,6 +113,7 @@ type CreatorDetails struct {
 	ID              primitive.ObjectID `bson:"id,omitempty" json:"id,omitempty"`
 	ProfileImageURL string             `bson:"profile_image_url,omitempty" json:"profile_image_url,omitempty"`
 	FullName        string             `bson:"full_name,omitempty" json:"full_name,omitempty"`
+	Role string `bson:"role,omitempty" json:"role,omitempty"`
 }
 
 // Comment represents the data model for a comment
