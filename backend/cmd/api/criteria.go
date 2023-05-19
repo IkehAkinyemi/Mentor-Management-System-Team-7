@@ -18,18 +18,12 @@ type createCriteriaRequest struct {
 
 type createQuestionRequest struct {
 	Question string     `json:"question" binding:"required"`
-	Answer   AnswerType `json:"answer" binding:"required"`
+	Answer   answerType `json:"answer" binding:"required"`
 }
 
-type AnswerType string
+type answerType string
 
-const (
-	SingleInput    AnswerType = "single_input"
-	MultipleChoice AnswerType = "multiple_choice"
-	MultipleInput  AnswerType = "multiple_input"
-	FileInput      AnswerType = "file_input"
-	YesOrNo        AnswerType = "yes_or_no"
-)
+
 // createCriteria creates a criteria.
 func (server *Server) createCriteria(ctx *gin.Context) {
 	var req createCriteriaRequest

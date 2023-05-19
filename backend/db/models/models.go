@@ -164,15 +164,4 @@ type Question struct {
 }
 
 // AnswerType represents the type of answer for a question.
-
 type AnswerType string
-
-// Available answer types
-
-const (
-    SingleInput   AnswerType = "single_input"
-    MultipleChoice   AnswerType = "multiple_choice"
-    MultipleInput AnswerType = "multiple_input"
-    FileInput     AnswerType = "file_input"
-    YesOrNo       AnswerType = "yes_or_no"
-)
