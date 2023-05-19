@@ -78,6 +78,12 @@ export interface Comment {
      * @memberof Comment
      */
     'created_at'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
+    'profile_image_url'?: string;
 }
 /**
  * 
@@ -186,16 +192,41 @@ export interface Discussion {
     'created_at'?: string;
     /**
      * 
-     * @type {string}
+     * @type {DiscussionCreatorDetails}
      * @memberof Discussion
      */
-    'owner_id'?: string;
+    'creator_details'?: DiscussionCreatorDetails;
     /**
      * 
      * @type {Array<Comment>}
      * @memberof Discussion
      */
     'comments'?: Array<Comment>;
+}
+/**
+ * 
+ * @export
+ * @interface DiscussionCreatorDetails
+ */
+export interface DiscussionCreatorDetails {
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscussionCreatorDetails
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscussionCreatorDetails
+     */
+    'profile_image_url'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DiscussionCreatorDetails
+     */
+    'full_name'?: string;
 }
 /**
  * 
@@ -704,26 +735,26 @@ export interface UsersIdChangePasswordPatch200Response {
 /**
  * 
  * @export
- * @interface UsersPatch200Response
+ * @interface UsersIdPatch200Response
  */
-export interface UsersPatch200Response {
+export interface UsersIdPatch200Response {
     /**
      * 
-     * @type {UsersPatch200ResponseData}
-     * @memberof UsersPatch200Response
+     * @type {UsersIdPatch200ResponseData}
+     * @memberof UsersIdPatch200Response
      */
-    'data'?: UsersPatch200ResponseData;
+    'data'?: UsersIdPatch200ResponseData;
 }
 /**
  * 
  * @export
- * @interface UsersPatch200ResponseData
+ * @interface UsersIdPatch200ResponseData
  */
-export interface UsersPatch200ResponseData {
+export interface UsersIdPatch200ResponseData {
     /**
      * 
      * @type {User}
-     * @memberof UsersPatch200ResponseData
+     * @memberof UsersIdPatch200ResponseData
      */
     'user'?: User;
 }
@@ -961,6 +992,43 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(comment, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get a discussion
+         * @param {string} id Discussion ID to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsIdGet: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('discussionsIdGet', 'id', id)
+            const localVarPath = `/discussions/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1453,13 +1521,17 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Update user\'s profile info
          * @param {UpdateUserResquest} usersInfo Update user\&#39;s profile data
+         * @param {any} id User\&#39;s ID to update
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPatch: async (usersInfo: UpdateUserResquest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersIdPatch: async (usersInfo: UpdateUserResquest, id: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'usersInfo' is not null or undefined
-            assertParamExists('usersPatch', 'usersInfo', usersInfo)
-            const localVarPath = `/users`;
+            assertParamExists('usersIdPatch', 'usersInfo', usersInfo)
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('usersIdPatch', 'id', id)
+            const localVarPath = `/users/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1563,6 +1635,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          */
         async discussionsIdAddCommentPost(comment: DiscussionsIdAddCommentPostRequest, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Comment>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.discussionsIdAddCommentPost(comment, id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get a discussion
+         * @param {string} id Discussion ID to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async discussionsIdGet(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Discussion>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.discussionsIdGet(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1712,11 +1795,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Update user\'s profile info
          * @param {UpdateUserResquest} usersInfo Update user\&#39;s profile data
+         * @param {any} id User\&#39;s ID to update
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersPatch(usersInfo: UpdateUserResquest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersPatch200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersPatch(usersInfo, options);
+        async usersIdPatch(usersInfo: UpdateUserResquest, id: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UsersIdPatch200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdPatch(usersInfo, id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1789,6 +1873,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         discussionsIdAddCommentPost(comment: DiscussionsIdAddCommentPostRequest, id: string, options?: any): AxiosPromise<Array<Comment>> {
             return localVarFp.discussionsIdAddCommentPost(comment, id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get a discussion
+         * @param {string} id Discussion ID to retrieve
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        discussionsIdGet(id: string, options?: any): AxiosPromise<Discussion> {
+            return localVarFp.discussionsIdGet(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1924,11 +2018,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Update user\'s profile info
          * @param {UpdateUserResquest} usersInfo Update user\&#39;s profile data
+         * @param {any} id User\&#39;s ID to update
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersPatch(usersInfo: UpdateUserResquest, options?: any): AxiosPromise<UsersPatch200Response> {
-            return localVarFp.usersPatch(usersInfo, options).then((request) => request(axios, basePath));
+        usersIdPatch(usersInfo: UpdateUserResquest, id: any, options?: any): AxiosPromise<UsersIdPatch200Response> {
+            return localVarFp.usersIdPatch(usersInfo, id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2011,6 +2106,18 @@ export class DefaultApi extends BaseAPI {
      */
     public discussionsIdAddCommentPost(comment: DiscussionsIdAddCommentPostRequest, id: string, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).discussionsIdAddCommentPost(comment, id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get a discussion
+     * @param {string} id Discussion ID to retrieve
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public discussionsIdGet(id: string, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).discussionsIdGet(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2173,12 +2280,13 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary Update user\'s profile info
      * @param {UpdateUserResquest} usersInfo Update user\&#39;s profile data
+     * @param {any} id User\&#39;s ID to update
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public usersPatch(usersInfo: UpdateUserResquest, options?: AxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).usersPatch(usersInfo, options).then((request) => request(this.axios, this.basePath));
+    public usersIdPatch(usersInfo: UpdateUserResquest, id: any, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).usersIdPatch(usersInfo, id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
