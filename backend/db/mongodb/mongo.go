@@ -25,6 +25,12 @@ const (
 
 	// TasksCollection defines Tasks collection name.
 	TasksCollection = "tasks"
+
+	//ProgramCollection defines Program collection name.
+	ProgramsCollection = "programs"
+
+	// CriteriaCollection defines Criteria collection name.
+	CriteriaCollection = "criteria"
 )
 
 // MongoClient defines a Mongodb-based client.

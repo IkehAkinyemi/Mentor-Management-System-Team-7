@@ -562,7 +562,6 @@ paths:
           description: "Task ID to get"
           required: true
           type: string
-    
     patch:
       summary: "Update a task"
       parameters:
@@ -607,6 +606,30 @@ paths:
             $ref: "#/definitions/ErrorResponse"
       security:
         - Bearer: []
+    delete:
+      summary: "Delete a task"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Task ID to delete"
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Task"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+      security:
+        - Bearer: []
+
   /mentors:
    get:
       summary: "List all mentors "
@@ -626,7 +649,6 @@ paths:
           description: "Internal Server Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
-    
   /mentor_mangers: 
     get:
       summary: "List all mentor managers "
@@ -646,7 +668,200 @@ paths:
           description: "Internal Server Error"
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /programs:
+   post:
+    summary: "Create a program"
+    parameters:
+      - name: "program_name and program_description"
+        in: body
+        description: "program_name and program_description of the program"
+        required: true
+        schema:
+          type: object
+          properties:
+            program_name:
+              type: string
+            program_description:
+              type: string
+            mentors:
+              type: array
+              items:
+                type: string
+            mentor_managers:
+              type: array
+              items:
+                type: string
+            criteria:
+              type: array
+              items:
+                type: string
+
+   get:
+    summary: "List all programs "
+    responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Programs"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
     
+  /programs/:id:
+   get:
+      summary: "Get a program"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Program ID to get"
+          required: true
+          type: string
+   patch:
+   summary: "Update a program"
+   parameters:
+          - name: "id"
+            in: path
+            description: "Program ID to update"
+            required: true
+            type: string
+          - name: "program_name and program_description"
+            in: body
+            description: "The program new program_name and program_description"
+            required: true
+            schema:
+              type: object
+              properties:
+                program_name:
+                  type: string
+                program_description:
+                  type: string
+                mentors:
+                  type: array
+                  items:
+                    type: string
+                mentor_managers:
+                  type: array
+                  items:
+                    type: string
+                criteria:
+                  type: array
+                  items:
+                    type: string
+
+
+   delete:
+    summary: "Delete a program"
+    parameters:
+      - name: "id"
+        in: path
+        description: "Program ID to delete"
+        required: true
+        type: string
+    responses:
+      200:
+        description: "OK"
+        schema:
+          $ref: "#/definitions/Programs"
+      400:
+        description: "Bad Request"
+        schema:
+          $ref: "#/definitions/ErrorResponse"
+      500:
+        description: "Internal Server Error"
+        schema:
+          $ref: "#/definitions/ErrorResponse" 
+    security:
+      - Bearer: []
+
+  /criteria:
+    post:
+      summary: "Create a criteria"
+      parameters:
+        - name: "question"
+          in: body
+          description: "question of the criteria"
+          required: true
+          schema:
+            type: object
+            properties:
+              question:
+                type: string
+              Answer:
+                type: string
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Criteria"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    get:
+  /criteria/:id:
+   patch:
+    summary: "Update a criteria"
+    parameters:
+      - name: "id"
+        in: path
+        description: "Criteria ID to update"
+        required: true
+        type: string
+      - name: "question"
+        in: body
+        description: "The criteria new question"
+        required: true
+        schema:
+          type: object
+          properties:
+            question:
+              type: string
+            Answer:
+              type: string
+   get:
+    summary: "Get a criteria"
+    parameters:
+      - name: "id"
+        in: path
+        description: "Criteria ID to get"
+        required: true
+        type: string
+   delete:
+    summary: "Delete a criteria"
+    parameters:
+      - name: "id"
+        in: path
+        description: "Criteria ID to delete"
+        required: true
+        type: string
+    responses:
+      200:
+        description: "OK"
+        schema:
+          $ref: "#/definitions/Criteria"
+      400:
+        description: "Bad Request"
+        schema:
+          $ref: "#/definitions/ErrorResponse"
+      500:
+        description: "Internal Server Error"
+        schema:
+          $ref: "#/definitions/ErrorResponse" 
+    security:
+      - Bearer: []
 
 
 definitions:
@@ -893,8 +1108,56 @@ definitions:
         items:
           type: string
 
+
+  Programs:
+    type: object
+    properties:
+      id:
+        type: string
+      program_name:
+        type: string
+      program_description:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      mentors:
+        type: array
+        items:
+          type: string
+      mentor_managers:
+        type: array
+        items:
+          type: string
+      criteria:  
+        type: array
+        items:
+          type: string
+
+
+
+  Criteria:
+    type: object
+    properties:
+      id:
+        type: string
+      question:
+        type: object
+        properties:
+    
+      created_at:
+        type: string
+        format: date-time
+      Answer:
+        type: string
+        items:
+          type: string
+
+         
+
   ErrorResponse:
     type: object
     properties:
       error:
         type: "string"
+

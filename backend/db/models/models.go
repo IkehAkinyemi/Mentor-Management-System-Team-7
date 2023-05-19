@@ -134,3 +134,43 @@ type Task struct {
 	Mentors        []primitive.ObjectID `bson:"mentors,omitempty" json:"mentors,omitempty"`
 	CreatedAt      time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty"`
 }
+
+// Program represents the data model for a program.
+type Program struct {
+	ID             primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
+	Avatar string `bson:"avatar,omitempty" json:"avatar,omitempty"`
+	ProgramName string `bson:"program_name,omitempty" json:"program_name,omitempty"`
+	ProgramDescription string `bson:"program_description,omitempty" json:"program_description,omitempty"`
+	CreatedAt      time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty"`
+	MentorManagers []primitive.ObjectID `bson:"mentor_managers,omitempty" json:"mentor_managers,omitempty"`
+	Mentors        []primitive.ObjectID `bson:"mentors,omitempty" json:"mentors,omitempty"`
+	Criteria   []primitive.ObjectID `bson:"criteria,omitempty" json:"criteria,omitempty"`
+
+}
+
+// Criteria represents the data model for a criteria.
+type Criteria struct{
+	ID             primitive.ObjectID   `bson:"_id,omitempty" json:"id,omitempty"`
+	Questions []Question `bson:"questions,omitempty" json:"questions,omitempty"`
+	CreatedAt      time.Time            `bson:"created_at,omitempty" json:"created_at,omitempty"`
+
+}
+// Question represents the data model for a question.
+type Question struct {
+    ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+    Question  string             `bson:"question,omitempty" json:"question,omitempty"`
+    Answer    AnswerType         `bson:"answer,omitempty" json:"answer,omitempty"`
+    CreatedAt time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
+}
+
+// AnswerType represents the type of answer for a question.
+type AnswerType string
+
+// Available answer types
+const (
+    SingleInput   AnswerType = "single_input"
+    MultipleChoice   AnswerType = "multiple_choice"
+    MultipleInput AnswerType = "multiple_input"
+    FileInput     AnswerType = "file_input"
+    YesOrNo       AnswerType = "yes_or_no"
+)
