@@ -4,7 +4,7 @@ import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 import { CHANGE_PASSWORD_SCHEMA } from "@/lib/schemas/authSchema";
 import { useFormik } from "formik";
 import Link from "next/link";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { API_URL } from "@/lib/constant";
 import { httpClient } from "@/lib/httpClient";
 import { ChangePasswordRequest, DefaultApi } from "@/lib/httpGen";
@@ -14,9 +14,25 @@ import Dialog from "@/components/Dialog";
 import Image from "next/image";
 
 const Password = () => {
-  const user = JSON.parse(localStorage?.getItem("user")!);
   const router = useRouter();
-  const userId = user.data.data.id;
+
+  const [userData, setUserData] = React.useState<any>("");
+
+  useEffect(() => {
+    // Check if localStorage is available
+
+    if (typeof localStorage !== "undefined") {
+      // Get favorites from localStorage
+      const userData = localStorage.getItem("user");
+
+      if (userData) {
+        setUserData(JSON.parse(userData));
+      }
+    }
+  }, []);
+
+  const userId = userData?.data?.user.id;
+
   const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
   const changePasswordMutation = useMutation(
     async (data: ChangePasswordRequest) =>

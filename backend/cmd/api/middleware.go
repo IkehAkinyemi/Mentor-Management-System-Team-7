@@ -106,30 +106,39 @@ func loggerMiddleware() gin.HandlerFunc {
 	}
 }
 
-
 // enableCORS enables cross-site requests for web user-agents.
 func (server *Server) enableCORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Add("Vary", "Origin")
 		c.Writer.Header().Add("Vary", "Access-Control-Request-Method")
 
-		origin := c.Request.Header.Get("Origin")
+		// origin := c.Request.Header.Get("Origin")
 
-		// Preflight
-		if origin != "" && len(server.config.CorsTrustedOrigins) != 0 {
-			for _, v := range server.config.CorsTrustedOrigins {
-				if origin == v || true {
-					c.Header("Access-Control-Allow-Origin", "*")
+		// // Preflight
+		// if origin != "" && len(server.config.CorsTrustedOrigins) != 0 {
+		// 	for _, v := range server.config.CorsTrustedOrigins {
+		// 		if origin == v || true {
+		// 			c.Header("Access-Control-Allow-Origin", "*")
 
-					if c.Request.Method == http.MethodOptions && c.Request.Header.Get("Access-Control-Request-Method") != "" {
-						c.Writer.Header().Add("Access-Control-Allow-Methods", "OPTIONS, PUT, PATCH, DELETE")
-						c.Writer.Header().Add("Access-Control-Allow-Headers", "Authorization, Content-Type")
+		// 			if c.Request.Method == http.MethodOptions && c.Request.Header.Get("Access-Control-Request-Method") != "" {
+		// 				c.Writer.Header().Add("Access-Control-Allow-Methods", "OPTIONS, PUT, PATCH, DELETE")
+		// 				c.Writer.Header().Add("Access-Control-Allow-Headers", "Authorization, Content-Type")
 
-						c.Status(http.StatusOK)
-						return
-					}
-				}
-			}
+		// 				c.Status(http.StatusOK)
+		// 				return
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		c.Header("Access-Control-Allow-Origin", "*")
+
+		if c.Request.Method == http.MethodOptions && c.Request.Header.Get("Access-Control-Request-Method") != "" {
+			c.Writer.Header().Add("Access-Control-Allow-Methods", "OPTIONS, PUT, PATCH, DELETE")
+			c.Writer.Header().Add("Access-Control-Allow-Headers", "Authorization, Content-Type")
+
+			c.Status(http.StatusOK)
+			return
 		}
 
 		c.Next()

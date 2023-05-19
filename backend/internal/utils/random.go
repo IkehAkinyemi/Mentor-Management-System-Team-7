@@ -71,7 +71,7 @@ func Extract(s string) string {
 	endIndex := strings.Index(s, end)
 
 	if startIndex == -1 || endIndex == -1 {
-			return ""
+		return ""
 	}
 
 	startIndex += len(start)

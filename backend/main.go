@@ -103,7 +103,7 @@ func runTaskProcessor(config utils.Config, redisOpt asynq.RedisClientOpt, store 
 
 // connectDB establishes connection to MongoDB
 func connectDB(connURI string) (*mongo.Client, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)

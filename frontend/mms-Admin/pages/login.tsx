@@ -15,7 +15,7 @@ const Login = () => {
   const { mutate, isLoading, isError, error, isSuccess, data } = useLogin();
 
   const [inputvalues, setInputValues] = useState({
-    email: "evqpsb@gmail.com",
+    email: "ikehfavourdeveloper@gmail.com",
     password: "secretsz"
   });
 

@@ -69,7 +69,7 @@ func (processor *RedisTaskProcessor) ProcessTaskSendResetPasswordEmail(
 		"http://localhost:8080/api/v1/reset_password?reset_token=%s",
 		resetPassword.SecretCode,
 	)
-	
+
 	subject := "Reset password instructions"
 	content := fmt.Sprintf(`Hi, <br/>
 	Someone has requested a link to change your password. You can do this through the link below! <br/>
