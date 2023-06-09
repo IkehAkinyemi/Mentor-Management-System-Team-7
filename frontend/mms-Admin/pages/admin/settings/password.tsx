@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import Dialog from "@/components/Dialog";
 import Image from "next/image";
+import axios from "axios";
 
 const Password = () => {
   const router = useRouter();
@@ -34,11 +35,19 @@ const Password = () => {
   const userId = userData?.data?.user.id;
 
   const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
+
   const changePasswordMutation = useMutation(
-    async (data: ChangePasswordRequest) =>
-      await passwordApi
-        .usersIdChangePasswordPatch(data, userId)
-        .then(res => res.data.result),
+    async (data: ChangePasswordRequest) => {
+      try {
+        const response = await httpClient.post(
+          `https://mms-team-7.onrender.com/api/v1/users/${userId}/change_password`,
+          {
+            data
+          }
+        );
+        return response.data;
+      } catch (error: any) {}
+    },
     {
       onSuccess: () => {
         router.push("/admin/settings/password/?password_success=true");
