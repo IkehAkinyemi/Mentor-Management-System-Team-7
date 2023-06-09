@@ -75,9 +75,48 @@ type Store interface {
 	// UpdateTask updates an existing task document in the collection.
 	UpdateTask(ctx context.Context, taskID string, data *models.Task) (*models.Task, error)
 
+	//DeleteTask deletes a task document from the collection by ID.
+	DeleteTask(ctx context.Context, taskID string) (*mongo.DeleteResult, error)
+
 	// List all mentors
 	ListMentors(ctx context.Context) ([]*models.User, error)
 
 	// List all mentor managers
 	ListMentorManagers(ctx context.Context) ([]*models.User, error)
+
+	// CreateProgram adds a new program document to the collection.
+	CreateProgram(ctx context.Context, program *models.Program) (*models.Program, error)
+
+	// GetProgram retrieves a program by its ID.
+	GetProgram(ctx context.Context, programID string) (*models.Program, error)
+
+	// ListPrograms retrieves a list of programs
+	ListPrograms(ctx context.Context) ([]*models.Program, error)
+
+	// UpdateProgram updates an existing program document in the collection.
+	UpdateProgram(ctx context.Context, programID string, data *models.Program) (*models.Program, error)
+
+	// DeleteProgram deletes a program document from the collection by ID.
+	DeleteProgram(ctx context.Context, programID string) (*mongo.DeleteResult, error)
+
+	// CreateCriteria adds a new criteria document to the collection.
+	CreateCriteria(ctx context.Context, criteria *models.Criteria) (*models.Criteria, error)
+
+	// GetCriteria retrieves a criteria by its ID.
+	GetCriteria(ctx context.Context, criteriaID string) (*models.Criteria, error)
+
+	// ListCriterias retrieves a list of criterias
+	ListCriterias(ctx context.Context) ([]*models.Criteria, error)
+
+	// UpdateCriteria updates an existing criteria document in the collection.
+	UpdateCriteria(ctx context.Context, criteriaID string, data *models.Criteria) (*models.Criteria, error)
+
+	// DeleteCriteria deletes a criteria document from the collection by ID.
+	DeleteCriteria(ctx context.Context, criteriaID string) (*mongo.DeleteResult, error)
+
+
+
+
+
+	
 }

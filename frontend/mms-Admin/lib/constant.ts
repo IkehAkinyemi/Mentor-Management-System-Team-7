@@ -1,7 +1,9 @@
 export const API_URL = "https://mms-team-7.onrender.com"
 
 export const queryKeyTag = {
-  CHANGE_PASSWORD: "CHANGE_PASSWORD"
+  CHANGE_PASSWORD: "CHANGE_PASSWORD",
+  MENTOR_MANAGER: "MENTOR_MANAGER",
+  MENTOR: "MENTOR",
 }
 export const RESET_PASSWORD_KEY = "RESET_PASSWORD_KEY"
 

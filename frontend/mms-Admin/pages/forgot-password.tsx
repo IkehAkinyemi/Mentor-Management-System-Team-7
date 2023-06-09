@@ -14,10 +14,10 @@ const ForgotPassword = () => {
   const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
   const forgotPasswordMutation = useMutation(
     async (data: ForgotPasswordPostRequest) =>
-      await passwordApi.forgotPasswordPost(data),
+      await passwordApi.forgotPasswordPost(data).then(res => res.data.result),
     {
-      onSuccess: (res) => {
-        Cookies.set(RESET_PASSWORD_KEY, res.data.result ?? "")
+      onSuccess: res => {
+        Cookies.set(RESET_PASSWORD_KEY, res!);
         console.log("success");
       },
       onError: () => {
