@@ -299,7 +299,7 @@ const General = () => {
             />
           </div>
         </div>
-        <div className="flex justify-end mt-5">
+        <div className="flex justify-center my-7">
           <Button
             variant="primary"
             className="text-base px-4 py-2"

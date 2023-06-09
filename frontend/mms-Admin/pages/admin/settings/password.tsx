@@ -9,6 +9,7 @@ import { API_URL } from "@/lib/constant";
 import { httpClient } from "@/lib/httpClient";
 import { ChangePasswordRequest, DefaultApi } from "@/lib/httpGen";
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 const Password = () => {
   const user = JSON.parse(localStorage?.getItem("user")!);
@@ -30,19 +31,41 @@ const Password = () => {
 
   const userId = userData?.data?.user.id;
 
-  const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
-  const changePasswordMutation = useMutation(
-    async (data: ChangePasswordRequest) =>
-      await passwordApi.usersIdChangePasswordPatch(data, userId),
-    {
-      onSuccess: () => {
-        console.log("success");
-      },
-      onError: () => {
-        console.log("Error");
-      }
-    }
+  const passwordApi = new DefaultApi(
+    undefined,
+    "https://mms-team-7.onrender.com/api/v1",
+    httpClient
   );
+  // const changePasswordMutation = useMutation(
+  //   async (data: ChangePasswordRequest) =>
+  //     await passwordApi.usersIdChangePasswordPatch(data, userId),
+  //   {
+  //     onSuccess: () => {
+  //       console.log("success");
+  //     },
+  //     onError: () => {
+  //       console.log("Error");
+  //     }
+  //   }
+  // );
+
+  const changePassword = useMutation(async () => {
+    const res = await axios.patch(
+      `${API_URL}/users/${userId}/change-password`,
+      {
+        current_password: formik.values.current_password,
+        new_password: formik.values.new_password,
+        confirm_password: formik.values.confirm_password
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user?.data?.token}`
+        }
+      }
+    );
+    console.log(res, "res");
+  });
+
   const formik = useFormik({
     initialValues: {
       current_password: "",
@@ -51,7 +74,7 @@ const Password = () => {
     },
     validationSchema: CHANGE_PASSWORD_SCHEMA,
     onSubmit: values => {
-      changePasswordMutation.mutate(values, userId);
+      changePassword.mutate(values, userId);
     }
   });
   return (
@@ -128,7 +151,7 @@ const Password = () => {
             />
           </div>
         </div>
-        <div className="flex justify-end mt-5">
+        <div className="flex justify-center mt-5">
           <Button
             variant="primary"
             className="text-base px-4 py-2"

@@ -1,14 +1,54 @@
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { InputField } from "@/components/InputFields";
+import { InputField, TextareaField } from "@/components/InputFields";
 import Button from "@/components/Button";
+import { useCreateDscussions } from "@/hooks/useCreateDscussions";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { ClipLoader } from "react-spinners";
 
 interface NewTopicModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
+export const newpost = yup.object({
+  title: yup.string().label("title").required(),
+  content: yup.string().label("content").required()
+});
 export function NewPostModal({ isOpen, setIsOpen }: NewTopicModalProps) {
+  const { data, mutate  , isLoading } = useCreateDscussions();
+
+  const handleCreateDiscussion = (e: any) => {
+    e.preventDefault();
+
+    // mutate({
+    //   title: e.target[0].value,
+    //   content: e.target[1].value
+    // });
+
+    mutate({
+      title: formik.values.title,
+      content: formik.values.content,
+      setIsOpen : setIsOpen
+    });
+
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      content: ""
+    },
+    validationSchema: newpost,
+    onSubmit: values => {
+      // mutate(values, userId);
+ 
+
+
+    }
+  });
+
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog
@@ -56,27 +96,53 @@ export function NewPostModal({ isOpen, setIsOpen }: NewTopicModalProps) {
             <form>
               <div className="mt-4">
                 <div className="title__input">
-                  <InputField placeholder="title" type="text" />
+                  <InputField
+                    placeholder="title"
+                    type="text"
+                    inputProps={{
+                      value: formik.values.title,
+                      onChange: formik.handleChange("title"),
+                      onBlur: formik.handleBlur("title")
+                    }}
+                    value={data?.title}
+                  />
                 </div>
 
                 <div className="title__details">
-                  <textarea
+                  <TextareaField
+                  rows={5}
+                    inputProps={{
+                      value: formik.values.content,
+                      onChange: formik.handleChange("content"),
+                      onBlur: formik.handleBlur("content")
+                    }}
                     className="w-full h-[150px] border border-[#E5E5E5] rounded-[10px] mt-[10px] p-[10px] text-[#828282] placeholder-[#828282] focus:outline-none focus:ring-2 focus:ring-[#058B94] focus:border-transparent"
                     placeholder="start typing..."
-                  ></textarea>
+                  ></TextareaField>
                 </div>
               </div>
 
               <div className="post flex justify-end">
-                <Button
+                <Button 
+                  // type="submit"
+                  // onClick={handleCreateDiscussion}
+
+
+
+            onClick={handleCreateDiscussion}
+
                   className="mt-[20px]
             
             px-[40px]
             py-[10px]
              h-[50px]
-            bg-mmsPry3 text-white "
+            bg-mmsPry3 text-white rou "
                 >
-                  Post to forum
+
+                  {
+                    isLoading ?  <ClipLoader color="#36d7b7" />: "Post to forum"
+                  }
+            
                 </Button>
               </div>
             </form>
