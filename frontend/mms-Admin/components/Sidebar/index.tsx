@@ -131,7 +131,7 @@ export const Sidebar = () => {
     }
   }, []);
   return (
-    <aside className="bg-[#F7FEFF] lg:block  hidden h-screen w-[257px] mt-[30px]   py-[20px] flex-shrink-0 fixed top-0 left-0 bottom-0">
+    <aside className="bg-[#F7FEFF] lg:block overflow-y-auto mb-20 hidden overflow-hidden h-screen w-[257px] mt-[30px]   py-[20px] flex-shrink-0 fixed top-0 left-0 bottom-0">
       <div className="user__greeting px-[3.6rem]">
         <h4 className="text-mmsBlack1 font-bold text-[20px] mt-20">
           Hi , {userData && userData?.data.user.first_name + ' '}

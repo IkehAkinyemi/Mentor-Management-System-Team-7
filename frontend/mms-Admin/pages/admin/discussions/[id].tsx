@@ -18,6 +18,7 @@ import {
   NextPageContext,
   GetServerSidePropsContext
 } from "next";
+import { useComment } from "@/hooks/useComment";
 
 interface discussion {
   id: number;
@@ -37,11 +38,30 @@ interface comment {
   created_at: string;
 }
 
-
-
 function Comment(props: any) {
   const router = useRouter();
   const { id } = router.query;
+
+  const [userData, setUserData] = React.useState<any>(null);
+  const { mutate, isLoading: loadingComment } = useComment();
+
+  const [values, setValues] = useState("");
+
+  const [loading, setLoading] = React.useState<boolean>(false);
+  useEffect(() => {
+    // Check if localStorage is available
+
+    setLoading(true);
+    if (typeof localStorage !== "undefined") {
+      // Get favorites from localStorage
+      const userData = localStorage.getItem("user");
+
+      if (userData) {
+        setUserData(JSON.parse(userData));
+        setLoading(false);
+      }
+    }
+  }, []);
 
   // const [id, setId] = useState("");
 
@@ -51,9 +71,23 @@ function Comment(props: any) {
   //   }
   // }, []);
 
+  const { data, isLoading, isError, error } = useFetchDiscussion(props.id);
+
   console.log(props, "id");
 
-  const { data, isLoading, isError, error } = useFetchDiscussion(props.id);
+  const handlePostComment = async (e: any) => {
+    e.preventDefault();
+
+    mutate({
+      first_name: userData?.first_name,
+      last_name: userData?.last_name,
+      content: values,
+      id: data?.data.data.id,
+      setValues: setValues
+    });
+  };
+
+  console.log(values, "props");
 
   if (isLoading) {
     return (
@@ -72,11 +106,11 @@ function Comment(props: any) {
               <div className="card__header mb-[15px] flex justify-between">
                 <div className="post__author">
                   <h1 className="text-mmsBlack2 font-semibold text-xl">
-                    Evergreen x
+                    {data?.data.data.creator_details.full_name}
                   </h1>
 
                   <h5 className="text-mmsBlack5 font-normal text-sm">
-                    Mentor Manager
+                    {data?.data.data.creator_details.role}
                   </h5>
                 </div>
 
@@ -130,6 +164,8 @@ function Comment(props: any) {
 
           <div className="add__comment bg-green11 border border-mmsPry10 rounded-[5px] py-3 px-[22px] mt-[41px] mb-[23px]">
             <textarea
+              onChange={e => setValues(e.target.value)}
+              value={values}
               className="w-full h-[100px]  bg-green11 rounded-[5px]  outline-none py-[24px] text-mmsBlack5 text-base font-normal"
               placeholder="Write a comment"
             ></textarea>
@@ -169,8 +205,17 @@ function Comment(props: any) {
                 </svg>
               </div>
               <div className="post__comment">
-                <button className="bg-mmsPry3 text-white rounded-[5px] px-[15px] py-[2px]  h-[24px] text-sm font-normal">
-                  Post Comment
+                <button
+                  className="bg-mmsPry3 text-white rounded-[5px] px-[15px] py-[2px]  h-[24px] text-sm font-normal"
+                  onClick={handlePostComment}
+                >
+                  {loadingComment ? (
+                    <div className="flex justify-center">
+                      <ClipLoader size={20} color="#36d7b7" />
+                    </div>
+                  ) : (
+                    "Post Comment"
+                  )}
                 </button>
               </div>
             </div>
