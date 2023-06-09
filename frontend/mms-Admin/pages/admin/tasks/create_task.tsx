@@ -98,8 +98,8 @@ const CreateTask = () => {
       createTaskMutation.mutate({
         title: values.title,
         details: values.details,
-        mentors: mentors,
-        mentor_managers: managers
+        mentors: ["Ibrahim Kabir"],
+        mentor_managers: ["Peculiar Ameh"]
       });
     }
   });
@@ -204,6 +204,7 @@ const CreateTask = () => {
           </div>
           <div>
             <Button
+              type="submit"
               variant="primary"
               className="py-[10px] px-[40px] text-lg"
               onClick={formik.handleSubmit}

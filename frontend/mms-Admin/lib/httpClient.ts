@@ -1,3 +1,4 @@
+
 import { API_URL } from "./constant";
 import axios from "axios";
 
@@ -6,6 +7,17 @@ export const httpClient =
     baseURL: API_URL + "/api/v1",
     timeout: 300000,
   })
+  httpClient.interceptors.request.use(
+    (config) => {
+      config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`
+      config.headers["Content-Type"] = "application/json",
+      config.headers.Accept = "application/json"
+         return config;
+     },
+     (error) => {
+         return Promise.reject(error)
+     }
+ )
 
 
 
