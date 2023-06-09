@@ -93,12 +93,29 @@ func (s *Server) setupRouter() {
 	authRoutes.GET("/api/v1/discussions", s.listDiscussions)
 	authRoutes.GET("/api/v1/discussions/:id", s.getDiscussion)
 	authRoutes.PATCH("/api/v1/discussions/:id", s.updateDiscussion)
+
 	authRoutes.POST("/api/v1/tasks", s.createTask)
 	authRoutes.GET("/api/v1/tasks", s.listTasks)
 	authRoutes.PATCH("/api/v1/tasks/:id", s.updateTask)
 	authRoutes.GET("/api/v1/tasks/:id", s.getTask)
+	authRoutes.DELETE("/api/v1/tasks/:id", s.deleteTask)
+
 	authRoutes.GET("/api/v1/mentors", s.listMentors)
 	authRoutes.GET("/api/v1/mentor_managers", s.listMentorManagers)
+
+	authRoutes.POST("/api/v1/programs", s.createProgram)
+	authRoutes.GET("/api/v1/programs", s.listPrograms)
+	authRoutes.GET("/api/v1/programs/:id", s.getProgram)
+	authRoutes.PATCH("/api/v1/programs/:id", s.updateProgram)
+	authRoutes.DELETE("/api/v1/programs/:id", s.deleteProgram)
+
+	authRoutes.POST("/api/v1/criteria", s.createCriteria)
+	authRoutes.GET("/api/v1/criteria", s.listCriteria)
+	authRoutes.GET("/api/v1/criteria/:id", s.getCriteria)
+	authRoutes.PATCH("/api/v1/criteria/:id", s.updateCriteria)
+	authRoutes.DELETE("/api/v1/criteria/:id", s.deleteCriteria)
+
+	
 	authRoutes.POST("/api/v1/auth/logout", s.logout)
 
 	s.router = router

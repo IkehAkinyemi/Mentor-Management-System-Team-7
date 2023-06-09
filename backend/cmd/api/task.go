@@ -191,3 +191,30 @@ func (server *Server) updateTask(ctx *gin.Context) {
 		Str("request_path", ctx.Request.URL.Path).
 		Msg("task updated")
 }
+
+// deleteTask deletes a task by id.
+func (server *Server) deleteTask(ctx *gin.Context) {
+	taskID := ctx.Param("id")
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if authPayload.UserRole != "Admin" {
+		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to delete task"))
+		return
+	}
+
+	_,err := server.store.DeleteTask(ctx, taskID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to delete task"))
+		return
+	}
+
+
+	ctx.JSON(http.StatusOK, envelop{"data": "task deleted"})
+	log.Info().
+		Str("user_id", authPayload.UserID).
+		Str("ip_address", ctx.ClientIP()).
+		Str("user_agent", ctx.Request.UserAgent()).
+		Str("request_method", ctx.Request.Method).
+		Str("request_path", ctx.Request.URL.Path).
+		Msg("task deleted")
+}

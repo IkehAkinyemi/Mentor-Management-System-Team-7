@@ -17,7 +17,7 @@ export interface ButtonProps {
     return (
       <button
         ref={ref}
-        className={clsx("inline-flex cursor-pointer justify-center items-center font-semibold gap-1  rounded-lg", ButtonVariantClass[variant!], className)}
+        className={clsx("inline-flex cursor-pointer justify-center items-center font-semibold gap-1 rounded-lg", ButtonVariantClass[variant!], className)}
         {...rest}
       >
         {prefix}

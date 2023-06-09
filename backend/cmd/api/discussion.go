@@ -41,6 +41,7 @@ func (server *Server) createDiscussion(ctx *gin.Context) {
 			ID: creator.ID,
 			ProfileImageURL: creator.ProfileImageURL,
 			FullName: fmt.Sprintf("%s %s", creator.FirstName, creator.LastName),
+			Role: creator.Role,
 		},
 		CreatedAt: time.Now(),
 		Comments:  []models.Comment{},

@@ -9,13 +9,22 @@ import { API_URL } from "@/lib/constant";
 import { httpClient } from "@/lib/httpClient";
 import { ChangePasswordRequest, DefaultApi } from "@/lib/httpGen";
 import { useMutation } from "@tanstack/react-query";
+<<<<<<< HEAD
 <<<<<<< discussions
+=======
+
+>>>>>>> af1b261d65c0258facee8743de6094f8d7ce6e30
 import axios from "axios";
 =======
 import { useRouter } from "next/router";
 import Dialog from "@/components/Dialog";
 import Image from "next/image";
 >>>>>>> develop
+
+import { useRouter } from "next/router";
+import Dialog from "@/components/Dialog";
+import Image from "next/image";
+
 
 const Password = () => {
   const router = useRouter();
@@ -68,7 +77,11 @@ const Password = () => {
         headers: {
           Authorization: `Bearer ${user?.data?.token}`
         }
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> af1b261d65c0258facee8743de6094f8d7ce6e30
   const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
   const changePasswordMutation = useMutation(
     async (data: ChangePasswordRequest) =>
@@ -81,7 +94,11 @@ const Password = () => {
       },
       onError: () => {
         router.push("/admin/settings/password/?password_failed=true");
+<<<<<<< HEAD
 >>>>>>> develop
+=======
+
+>>>>>>> af1b261d65c0258facee8743de6094f8d7ce6e30
       }
     );
     console.log(res, "res");

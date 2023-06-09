@@ -48,7 +48,7 @@ export default Dialog;
 const DialogVariant = {
   fullscreen: "w-full",
   scroll:
-    "w-[300px] mx-auto md:w-[500px] lg:w-full flex items-center justify-center h-full",
+    "w-[300px] mx-auto md:min-w-[500px] flex items-center justify-center h-full",
   scrollable:
     "max-h-[100%] mx-auto w-full flex items-center justify-center h-full"
 };

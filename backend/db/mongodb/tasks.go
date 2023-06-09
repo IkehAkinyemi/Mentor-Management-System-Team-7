@@ -72,6 +72,15 @@ func (mc *MongoClient) UpdateTask(ctx context.Context, taskID string, data *mode
 	return mc.GetTask(ctx, taskID)
 }
 
+// DeleteTask deletes a task document from the collection.
+func (mc *MongoClient) DeleteTask(ctx context.Context, taskID string) (*mongo.DeleteResult, error) {
+	objectID, err := primitive.ObjectIDFromHex(taskID)
+	if err != nil {
+		return nil, err
+	}
+	return mc.client.Database(DBName).Collection(TasksCollection).DeleteOne(ctx, bson.M{"_id": objectID})
+}
+
 
 
 
