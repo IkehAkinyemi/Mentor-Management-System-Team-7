@@ -7,24 +7,29 @@ import {
 import axios from "axios";
 
 interface CreateOrder {
-  title: string;
+  first_name: "string";
+  last_name: "string";
   content: string;
-  setIsOpen: any;
+  id: "string";
+  setValues: any;
 }
 
-export const useCreateDscussions = () => {
+export const useComment = () => {
   const queryClient = useQueryClient();
   const createDiscussions = async ({
-    title,
+    first_name,
+    last_name,
     content,
-    setIsOpen
+    id,
+    setValues
   }: CreateOrder) => {
     try {
       const response = await axios.post(
-        `https://mms-team-7.onrender.com/api/v1/discussions`,
+        `https://mms-team-7.onrender.com/api/v1/discussions/${id}/add_comment`,
 
         {
-          title,
+          first_name,
+          last_name,
           content
         },
 
@@ -37,9 +42,10 @@ export const useCreateDscussions = () => {
       );
 
       if (response.status === 201) {
-        queryClient.invalidateQueries();
 
-        setIsOpen(false);
+      setValues("");
+
+        queryClient.invalidateQueries();
 
         // navigate(0);
       }

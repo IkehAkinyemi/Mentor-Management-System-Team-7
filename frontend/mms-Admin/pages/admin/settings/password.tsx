@@ -9,9 +9,22 @@ import { API_URL } from "@/lib/constant";
 import { httpClient } from "@/lib/httpClient";
 import { ChangePasswordRequest, DefaultApi } from "@/lib/httpGen";
 import { useMutation } from "@tanstack/react-query";
+<<<<<<< HEAD
+<<<<<<< discussions
+=======
+
+>>>>>>> af1b261d65c0258facee8743de6094f8d7ce6e30
+import axios from "axios";
+=======
 import { useRouter } from "next/router";
 import Dialog from "@/components/Dialog";
 import Image from "next/image";
+>>>>>>> develop
+
+import { useRouter } from "next/router";
+import Dialog from "@/components/Dialog";
+import Image from "next/image";
+
 
 const Password = () => {
   const router = useRouter();
@@ -33,6 +46,42 @@ const Password = () => {
 
   const userId = userData?.data?.user.id;
 
+<<<<<<< discussions
+  const passwordApi = new DefaultApi(
+    undefined,
+    "https://mms-team-7.onrender.com/api/v1",
+    httpClient
+  );
+  // const changePasswordMutation = useMutation(
+  //   async (data: ChangePasswordRequest) =>
+  //     await passwordApi.usersIdChangePasswordPatch(data, userId),
+  //   {
+  //     onSuccess: () => {
+  //       console.log("success");
+  //     },
+  //     onError: () => {
+  //       console.log("Error");
+  //     }
+  //   }
+  // );
+
+  const changePassword = useMutation(async () => {
+    const res = await axios.patch(
+      `${API_URL}/users/${userId}/change-password`,
+      {
+        current_password: formik.values.current_password,
+        new_password: formik.values.new_password,
+        confirm_password: formik.values.confirm_password
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user?.data?.token}`
+        }
+<<<<<<< HEAD
+=======
+=======
+
+>>>>>>> af1b261d65c0258facee8743de6094f8d7ce6e30
   const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
   const changePasswordMutation = useMutation(
     async (data: ChangePasswordRequest) =>
@@ -45,9 +94,16 @@ const Password = () => {
       },
       onError: () => {
         router.push("/admin/settings/password/?password_failed=true");
+<<<<<<< HEAD
+>>>>>>> develop
+=======
+
+>>>>>>> af1b261d65c0258facee8743de6094f8d7ce6e30
       }
-    }
-  );
+    );
+    console.log(res, "res");
+  });
+
   const formik = useFormik({
     initialValues: {
       current_password: "",
@@ -56,7 +112,7 @@ const Password = () => {
     },
     validationSchema: CHANGE_PASSWORD_SCHEMA,
     onSubmit: values => {
-      changePasswordMutation.mutate(values, userId);
+      changePassword.mutate(values, userId);
     }
   });
   return (
@@ -133,7 +189,7 @@ const Password = () => {
             />
           </div>
         </div>
-        <div className="flex justify-end mt-5">
+        <div className="flex justify-center mt-5">
           <Button
             variant="primary"
             className="text-base px-4 py-2"

@@ -39,12 +39,23 @@ interface discussion {
   created_at: string;
 
   comments: [];
+  creator_details : {
+    id: number;
+    full_name: string;
+    email: string;
+    role  : string;
+  }
+
 }
 
 function Index() {
   let [isOpen, setIsOpen] = useState(false);
 
   const { data, isLoading, isError, error } = useFetchDiscussions();
+  const [pageCount, setPageCount] = useState(1); 
+  const [isLoaded, setisLoaded] = useState(false);
+  const [currentPage, setcurrentPage] = useState(0); 
+  const [query, setQuery] = useState('startups'); 
 
   console.log(data?.data, "discussions");
 
@@ -102,11 +113,15 @@ function Index() {
               <div className="card__header mb-[15px] flex justify-between">
                 <div className="post__author">
                   <h1 className="text-mmsBlack2 font-semibold text-xl">
-                    Evergreen x
+                 {
+                  item.creator_details.full_name
+                 }
                   </h1>
 
                   <h5 className="text-mmsBlack5 font-normal text-sm">
-                    Mentor Manager
+                   {
+                      item.creator_details.role
+                   }
                   </h5>
                 </div>
 
