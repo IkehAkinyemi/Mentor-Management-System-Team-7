@@ -9,10 +9,16 @@ import { API_URL } from "@/lib/constant";
 import { httpClient } from "@/lib/httpClient";
 import { ChangePasswordRequest, DefaultApi } from "@/lib/httpGen";
 import { useMutation } from "@tanstack/react-query";
+<<<<<<< discussions
 import axios from "axios";
+=======
+import { useRouter } from "next/router";
+import Dialog from "@/components/Dialog";
+import Image from "next/image";
+>>>>>>> develop
 
 const Password = () => {
-  const user = JSON.parse(localStorage?.getItem("user")!);
+  const router = useRouter();
 
   const [userData, setUserData] = React.useState<any>("");
 
@@ -31,6 +37,7 @@ const Password = () => {
 
   const userId = userData?.data?.user.id;
 
+<<<<<<< discussions
   const passwordApi = new DefaultApi(
     undefined,
     "https://mms-team-7.onrender.com/api/v1",
@@ -61,6 +68,20 @@ const Password = () => {
         headers: {
           Authorization: `Bearer ${user?.data?.token}`
         }
+=======
+  const passwordApi = new DefaultApi(undefined, API_URL, httpClient);
+  const changePasswordMutation = useMutation(
+    async (data: ChangePasswordRequest) =>
+      await passwordApi
+        .usersIdChangePasswordPatch(data, userId)
+        .then(res => res.data.result),
+    {
+      onSuccess: () => {
+        router.push("/admin/settings/password/?password_success=true");
+      },
+      onError: () => {
+        router.push("/admin/settings/password/?password_failed=true");
+>>>>>>> develop
       }
     );
     console.log(res, "res");
@@ -168,6 +189,54 @@ const Password = () => {
           </Link>
         </div>
       </div>
+      {router.query.password_success && (
+        <Dialog variant="scroll" open={false} onClose={() => router.back()}>
+          <div className="py-8 flex flex-col justify-center items-center px-12">
+            <h2 className="text-2xl font-semibold text-[#141414] my-2">
+              Task Created Successfully
+            </h2>
+            <Image
+              src="/images/password-success.png"
+              width={220}
+              height={165}
+              alt="task_success"
+            />
+            <div className="mt-4">
+              <Button
+                variant="primary"
+                className="py-[10px] px-[40px] text-lg"
+                onClick={() => router.back()}
+              >
+                Done
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      )}
+      {router.query.password_failed && (
+        <Dialog variant="scroll" open={false} onClose={() => router.back()}>
+          <div className="py-8 flex flex-col justify-center items-center px-12">
+            <h2 className="text-2xl font-semibold text-red-500 my-2">
+              Ops! something happened, Try again
+            </h2>
+            <Image
+              src="/images/password-success.png"
+              width={220}
+              height={165}
+              alt="task_success"
+            />
+            <div className="mt-4">
+              <Button
+                variant="primary"
+                className="py-[10px] bg-red-500 px-[40px] text-lg"
+                onClick={() => router.back()}
+              >
+                Done
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      )}
     </div>
   );
 };
