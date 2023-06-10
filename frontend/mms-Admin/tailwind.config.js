@@ -6,7 +6,15 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
+    fontFamily: {
+      readex: ["Mukta"]
+    },
     extend: {
+      fontFamily: {
+        sans: ["Mukta"],
+        serif: ["Mukta"],
+        mono: ["Mukta"]
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

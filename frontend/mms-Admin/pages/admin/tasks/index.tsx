@@ -49,7 +49,9 @@ const Tasks = () => {
           </Card>
         </div>
         {/* task details */}
-        <div></div>
+        <div>
+          
+        </div>
       </div>
     </div>
   );
