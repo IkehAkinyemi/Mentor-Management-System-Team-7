@@ -28,7 +28,7 @@ func (server *Server) createTask(ctx *gin.Context) {
 	}
 
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	if authPayload.UserRole != "Admin" {
+	if authPayload.UserRole != "Admin" && authPayload.UserRole != "Mentor Manager (MM)" {
 		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to create task"))
 		return
 	}
@@ -82,13 +82,6 @@ func (server *Server) createTask(ctx *gin.Context) {
 
 // listTasks returns a list of tasks.
 func (server *Server) listTasks(ctx *gin.Context) {
-
-	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	if authPayload.UserRole != "Admin" {
-		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to list tasks"))
-		return
-	}
-
 	tasks, err := server.store.ListTasks(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to list tasks"))
@@ -102,12 +95,6 @@ func (server *Server) listTasks(ctx *gin.Context) {
 // getTask returns a task by id.
 func (server *Server) getTask(ctx *gin.Context) {
 	taskID := ctx.Param("id")
-
-	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	if authPayload.UserRole != "Admin" {
-		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to get task"))
-		return
-	}
 
 	task, err := server.store.GetTask(ctx, taskID)
 	if err != nil {
@@ -135,7 +122,7 @@ func (server *Server) updateTask(ctx *gin.Context) {
 	}
 
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	if authPayload.UserRole != "Admin" {
+	if authPayload.UserRole != "Admin" && authPayload.UserRole != "Mentor Manager (MM)" {
 		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to update task"))
 		return
 	}
@@ -197,21 +184,20 @@ func (server *Server) deleteTask(ctx *gin.Context) {
 	taskID := ctx.Param("id")
 
 	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
-	if authPayload.UserRole != "Admin" {
+	if authPayload.UserRole != "Admin" && authPayload.UserRole != "Mentor Manager (MM)" {
 		ctx.JSON(http.StatusUnauthorized, errorResponse("not authorised to delete task"))
 		return
 	}
 
-	_,err := server.store.DeleteTask(ctx, taskID)
+	_, err := server.store.DeleteTask(ctx, taskID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse("failed to delete task"))
 		return
 	}
 
-
 	ctx.JSON(http.StatusOK, envelop{"data": "task deleted"})
 	log.Info().
-		Str("user_id", authPayload.UserID).
+		Str("user_id", authPayload.UserRole).
 		Str("ip_address", ctx.ClientIP()).
 		Str("user_agent", ctx.Request.UserAgent()).
 		Str("request_method", ctx.Request.Method).
