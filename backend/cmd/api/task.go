@@ -197,7 +197,7 @@ func (server *Server) deleteTask(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, envelop{"data": "task deleted"})
 	log.Info().
-		Str("user_id", authPayload.UserRole).
+		Str("user_id", authPayload.UserID).
 		Str("ip_address", ctx.ClientIP()).
 		Str("user_agent", ctx.Request.UserAgent()).
 		Str("request_method", ctx.Request.Method).
