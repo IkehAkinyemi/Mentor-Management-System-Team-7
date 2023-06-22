@@ -1,0 +1,3 @@
+app.env.example
+*.env
+cmd/examples/**/*

@@ -1,0 +1,1163 @@
+swagger: "2.0"
+info:
+  title: "MMS-Team-7"
+  description: "
+Mentors Management system is a people management app that enables proper. 
+  coordination of mentors needed to execute projects, ranging from recruitment to 
+  off-boarding. Ensue to go through the app doc below to read more and follow all the instructions."
+  version: "1.0.0"
+host: "mms-team-7.onrender.com"
+basePath: "/api/v1"
+schemes:
+  - "https"
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  /users/{id}/change_password:
+    patch:
+      summary: "Changer user's password"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of the user"
+          required: true
+          type: string
+        - name: "passwords"
+          in: "body"
+          description: "Current password and new password of the user to update"
+          required: true
+          schema:
+            $ref: "#/definitions/ChangePasswordRequest"
+      responses:
+        200: 
+          description: "OK"
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+
+  /forgot_password:
+    post:
+      summary: "Request for password reset"
+      parameters:
+        - name: "email"
+          in: "body"
+          description: "User's email to send reset password email/token"
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /reset_password:
+    patch:
+      summary: "Reset user's password"
+      parameters:
+        - name: "reset_token"
+          in: "query"
+          description: "Signed token to reset password"
+          required: true
+          schema:
+            type: string
+        - name: "New password credentials"
+          in: "body"
+          description: "Current password and new password of the user to update"
+          required: true
+          schema:
+            type: object
+            properties:
+              new_password:
+                type: string
+              confirm_new_password:
+                type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+  /users/{id}:
+    patch:
+      summary: "Update user's profile info"
+      parameters:
+        - name: "id"
+          in: path
+          description: "User's ID to update"
+          required: true
+          schema:
+            type: string
+        - name: "User's info"
+          in: "body"
+          description: "Update user's profile data"
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateUserResquest"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/definitions/User"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+
+  /auth/login:
+    post:
+      summary: "Login a user"
+      parameters:
+        - name: "credentials"
+          in: "body"
+          description: "Email address and password of the user to authenticate"
+          required: true
+          schema:
+            $ref: "#/definitions/LoginRequest"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /auth/logout:
+    post:
+      summary: "Logout a user"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+
+  /auth/google/login:
+    get:
+      summary: "Initiate Google Sign-In"
+      description: "Initiate Google Sign-In flow by redirecting the user to Google authorization endpoint"
+      responses:
+        307:
+          description: "Temporary Redirect"
+          headers:
+            Location:
+              description: "URL to redirect the user to Google authorization endpoint"
+              schema:
+                type: "string"
+                example: "https://accounts.google.com/o/oauth2/auth"
+
+  /auth/google/callback:
+    get:
+      summary: "Google sign-in callback"
+      parameters:
+        - name: code
+          in: query
+          required: true
+          description: "The authorization code returned by Google after the user approves access"
+        - name: state
+          in: query
+          required: true
+          description: "A value passed by the client which is returned unchanged in the response"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "Not Found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /faqs:
+    post:
+      summary: "Create FAQ"
+      parameters:
+        - name: "FAQ"
+          in: "body"
+          description: "Details of FAQ to create"
+          required: true
+          schema:
+            $ref: "#/definitions/CreateFAQRequest"
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/CreateFAQResponse"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+    get:
+      summary: "Get all FAQs"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/GetFAQsResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /discussions:
+    post:
+      summary: "Create a discussion forum"
+      parameters:
+        - name: "title and content"
+          in: body
+          description: "Title and content of the discussion"
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Discussion"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+    get:
+      summary: "List all discussions for a user"
+      parameters:
+        - name: "page_id"
+          in: query
+          description: "What page to start from"
+          required: true
+          type: integer
+        - name: "page_size"
+          in: query
+          description: "What page size to return"
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Discussion"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+
+  /discussions/{id}:
+    patch:
+      summary: "Update a discussion"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Discussion ID to update"
+          required: true
+          type: string
+        - name: "title and content"
+          in: body
+          description: "The discussion new title and content"
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              content:
+                type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Discussion"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+    get:
+      summary: "Get a discussion"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Discussion ID to retrieve"
+          required: true
+          type: string
+      responses:
+        200:
+          200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Discussion"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+
+  /discussions/{id}/add_comment:
+    post:
+      summary: "Add a comment on discussion"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Discussion ID to add comment"
+          required: true
+          type: string
+        - name: "comment"
+          in: body
+          description: "Content of the comment and owner's full name "
+          required: true
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+              last_name:
+                type: string
+              content:
+                type: string
+      responses:
+        201:
+          description: "Created"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Comment"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+  /tasks:
+    post: 
+      summary: "Create a task"
+      parameters:
+        - name: "title and content"
+          in: body
+          description: "Title and content of the task"
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              details:
+                type: string
+              mentors:
+                type: array
+                items:
+                  type: string
+              mentor_managers:
+                type: array
+                items:
+                  type: string
+                      
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Task"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+    get:
+      summary: "List all tasks for a user"
+    
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Task"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []     
+  /tasks/:id:
+    get: 
+      summary: "Get a task"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Task ID to get"
+          required: true
+          type: string
+    patch:
+      summary: "Update a task"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Task ID to update"
+          required: true
+          type: string
+        - name: "title and content"
+          in: body
+          description: "The task new title and content"
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+              details:
+                type: string
+              mentors:
+                type: array
+                items:
+                  type: string 
+              mentor_managers:
+                type: array
+                items:
+                  type: string
+                  
+             
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Task"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - Bearer: []
+    delete:
+      summary: "Delete a task"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Task ID to delete"
+          required: true
+          type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Task"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+      security:
+        - Bearer: []
+
+  /mentors:
+   get:
+      summary: "List all mentors "
+   
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /mentor_mangers: 
+    get:
+      summary: "List all mentor managers "
+     
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /programs:
+   post:
+    summary: "Create a program"
+    parameters:
+      - name: "program_name and program_description"
+        in: body
+        description: "program_name and program_description of the program"
+        required: true
+        schema:
+          type: object
+          properties:
+            program_name:
+              type: string
+            program_description:
+              type: string
+            mentors:
+              type: array
+              items:
+                type: string
+            mentor_managers:
+              type: array
+              items:
+                type: string
+            criteria:
+              type: array
+              items:
+                type: string
+
+   get:
+    summary: "List all programs "
+    responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Programs"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+
+    
+  /programs/:id:
+   get:
+      summary: "Get a program"
+      parameters:
+        - name: "id"
+          in: path
+          description: "Program ID to get"
+          required: true
+          type: string
+   patch:
+   summary: "Update a program"
+   parameters:
+          - name: "id"
+            in: path
+            description: "Program ID to update"
+            required: true
+            type: string
+          - name: "program_name and program_description"
+            in: body
+            description: "The program new program_name and program_description"
+            required: true
+            schema:
+              type: object
+              properties:
+                program_name:
+                  type: string
+                program_description:
+                  type: string
+                mentors:
+                  type: array
+                  items:
+                    type: string
+                mentor_managers:
+                  type: array
+                  items:
+                    type: string
+                criteria:
+                  type: array
+                  items:
+                    type: string
+
+
+   delete:
+    summary: "Delete a program"
+    parameters:
+      - name: "id"
+        in: path
+        description: "Program ID to delete"
+        required: true
+        type: string
+    responses:
+      200:
+        description: "OK"
+        schema:
+          $ref: "#/definitions/Programs"
+      400:
+        description: "Bad Request"
+        schema:
+          $ref: "#/definitions/ErrorResponse"
+      500:
+        description: "Internal Server Error"
+        schema:
+          $ref: "#/definitions/ErrorResponse" 
+    security:
+      - Bearer: []
+
+  /criteria:
+    post:
+      summary: "Create a criteria"
+      parameters:
+        - name: "question"
+          in: body
+          description: "question of the criteria"
+          required: true
+          schema:
+            type: object
+            properties:
+              question:
+                type: string
+              Answer:
+                type: string
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Criteria"
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    get:
+  /criteria/:id:
+   patch:
+    summary: "Update a criteria"
+    parameters:
+      - name: "id"
+        in: path
+        description: "Criteria ID to update"
+        required: true
+        type: string
+      - name: "question"
+        in: body
+        description: "The criteria new question"
+        required: true
+        schema:
+          type: object
+          properties:
+            question:
+              type: string
+            Answer:
+              type: string
+   get:
+    summary: "Get a criteria"
+    parameters:
+      - name: "id"
+        in: path
+        description: "Criteria ID to get"
+        required: true
+        type: string
+   delete:
+    summary: "Delete a criteria"
+    parameters:
+      - name: "id"
+        in: path
+        description: "Criteria ID to delete"
+        required: true
+        type: string
+    responses:
+      200:
+        description: "OK"
+        schema:
+          $ref: "#/definitions/Criteria"
+      400:
+        description: "Bad Request"
+        schema:
+          $ref: "#/definitions/ErrorResponse"
+      500:
+        description: "Internal Server Error"
+        schema:
+          $ref: "#/definitions/ErrorResponse" 
+    security:
+      - Bearer: []
+
+
+definitions:
+  ChangePasswordRequest:
+    type: object
+    properties:
+      current_password:
+        type: string
+      new_password:
+        type: string
+      confirm_new_password:
+        type: string
+
+  LoginRequest:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+
+  LoginResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          token:
+            type: string
+          payload:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              user_id:
+                type: string
+              user_role:
+                type: string
+              issued_at:
+                type: string
+                format: date-time
+              expired_at:
+                type: string
+                format: date-time
+          user:
+            $ref: "#/definitions/User"
+              
+  FAQ:
+    type: object
+    properties:
+      question:
+        type: string
+      answer:
+        type: string
+      category:
+        type: string
+
+  CreateFAQRequest:
+    $ref: "#/definitions/FAQ"
+
+  CreateFAQResponse:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          id:
+            type: string
+          question:
+            type: string
+          answer:
+            type: string
+          category:
+            type: string
+
+  GetFAQsResponse:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/FAQ"
+  
+  UpdateUserResquest:
+    type: object
+    properties:
+      first_name:
+        type: string
+      last_name:
+        type: string
+      about:
+        type: string
+      website:
+        type: string
+      profile_image_url:
+        type: string
+      country:
+        type: string
+      city:
+        type: string
+      github_url:
+        type: string
+      linkedin_url:
+        type: string
+      twitter_url:
+        type: string
+      instagram_url:
+        type: string
+  
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      role:
+        type: string
+      about:
+        type: string
+      contact:
+        $ref: "#/definitions/Contact"
+      created_at:
+        type: string
+        format: date-time
+      profile_image_url:
+        type: string
+      password_changed_at:
+        type: string
+        format: date-time
+      socials:
+        $ref: "#/definitions/Socials"
+      is_email_verified:
+        type: boolean
+
+  Contact:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      website:
+        type: string
+      country:
+        type: string
+      city:
+        type: string
+
+  Socials:
+    type: object
+    properties:
+      github_url:
+        type: object
+        properties:
+          value:
+            type: string
+          is_visible:
+            type: string
+      linkedin_url:
+        type: object
+        properties:
+          value:
+            type: string
+          is_visible:
+            type: string
+      twitter_url:
+        type: object
+        properties:
+          value:
+            type: string
+          is_visible:
+            type: string
+      instagram_url:
+        type: object
+        properties:
+          value:
+            type: string
+          is_visible:
+            type: string
+
+  Discussion:
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      creator_details:
+        type: object
+        properties:
+          id:
+            type: string
+          profile_image_url:
+            type: string
+          full_name:
+            type: string
+      comments:
+        type: array
+        items:
+          $ref: "#/definitions/Comment"
+
+  Comment:
+    type: object
+    properties:
+      owner_id:
+        type: string
+      full_name:
+        type: string
+      content:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      profile_image_url:
+        type: string
+
+  Task:
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      details:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      mentors:
+        type: array
+        items:
+          type: string
+      mentor_managers:
+        type: array
+        items:
+          type: string
+
+
+  Programs:
+    type: object
+    properties:
+      id:
+        type: string
+      program_name:
+        type: string
+      program_description:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      mentors:
+        type: array
+        items:
+          type: string
+      mentor_managers:
+        type: array
+        items:
+          type: string
+      criteria:  
+        type: array
+        items:
+          type: string
+
+
+
+  Criteria:
+    type: object
+    properties:
+      id:
+        type: string
+      question:
+        type: object
+        properties:
+    
+      created_at:
+        type: string
+        format: date-time
+      Answer:
+        type: string
+        items:
+          type: string
+
+         
+
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: "string"
+
