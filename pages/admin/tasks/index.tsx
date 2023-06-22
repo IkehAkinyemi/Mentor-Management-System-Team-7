@@ -2,13 +2,13 @@ import { Button } from "@/components";
 import { Card } from "@/components/Card";
 import { DashboardLayout } from "@/components/layouts/dashboard-layout";
 import { queryKeyTag } from "@/lib/constant";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { ReactElement } from "react";
 import { Calendar, Filter, Search } from "react-feather";
-import { useQuery } from "react-query";
 
 const Tasks = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const Tasks = () => {
         }
       }
     );
-    return res.data;
+    return res.data?.data;
   };
   const TasksQuery = useQuery([queryKeyTag.TASKS], getTasks);
   return (
@@ -54,10 +54,10 @@ const Tasks = () => {
       <div className="flex items-start ">
         {/* tasks sidebar */}
         <div className="w-[310px] min-h-screen">
-          {TasksQuery.data?.map((task: any, index: number) => (
+          {TasksQuery?.data?.map((task: any, index: number) => (
             <Card
               key={index}
-              className="py-4 shadow-none w-[309px] border flex-row gap-3 items-start justify-center border-[#E6E6E6] rounded-md"
+              className="py-4  my-3 shadow-none w-[309px] border flex-row gap-3 items-start justify-center border-[#E6E6E6] rounded-md"
             >
               <Image src="/images/task.png" width={39} height={40} alt="task" />
               <div className="text-[#141414] font-semibold ">

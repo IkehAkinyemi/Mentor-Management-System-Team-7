@@ -72,7 +72,7 @@ const CreateTask = () => {
             data
           }
         );
-        return response.data;
+        return response.data?.data;
       } catch (error: any) {}
     },
     {
@@ -97,7 +97,7 @@ const CreateTask = () => {
         }
       }
     );
-    return res.data;
+    return res.data?.data;
   };
   const mentorManagerData = useQuery(
     [queryKeyTag.MENTOR_MANAGER],
@@ -115,7 +115,7 @@ const CreateTask = () => {
         }
       }
     );
-    return res.data;
+    return res.data?.data;
   };
   const mentorData = useQuery([queryKeyTag.MENTOR], getMentor);
   // form submission process
@@ -263,7 +263,7 @@ const CreateTask = () => {
               {mentorManagerData.data?.map((manager: any, index: number) => (
                 <Card
                   key={index}
-                  className="py-2 mx-3 shadow-none lg:w-[95%] border flex-row items-center gap-2 my-3 border-[#E6E6E6] rounded-md"
+                  className="py-2 mx-3 px-3 shadow-none lg:w-[95%] border flex justify-between flex-row items-center gap-2 my-3 border-[#E6E6E6] rounded-md"
                 >
                   <Image
                     src="/images/task.png"
@@ -320,7 +320,7 @@ const CreateTask = () => {
               {mentorData.data?.map((mentor: any, index: number) => (
                 <Card
                   key={index}
-                  className="py-2 mx-3 shadow-none lg:w-[95%] border flex-row items-center gap-2 my-3 border-[#E6E6E6] rounded-md"
+                  className="py-2 mx-3 px-3 shadow-none lg:w-[95%] border flex justify-between flex-row items-center gap-2 my-3 border-[#E6E6E6] rounded-md"
                 >
                   <Image
                     src="/images/task.png"
