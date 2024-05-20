@@ -132,3 +132,4 @@ func closeDB(client *mongo.Client) {
 
 	client.Disconnect(ctx)
 }
+

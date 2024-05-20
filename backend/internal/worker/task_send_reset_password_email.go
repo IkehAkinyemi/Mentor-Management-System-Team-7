@@ -50,6 +50,34 @@ func (distributor *RedisTaskDistributor) DistributeTaskSendResetPasswordEmail(
 	return nil
 }
 
+
+// PayloadResetPasswordEmail provides the userEmail.
+type PayloadResetPasswordEmail struct {
+	ID        string `json:"payload_id"`
+	UserID    string `json:"user_id"`
+	UserEmail string `json:"user_email"`
+	// extra
+}
+
+// DistributeTaskSendResetPasswordEmail enqueues the given task to be processed by a worker. It returns an error if the task could
+// not be enqueued.
+func (distributor *RedisTaskDistributor) DistributeTaskWelcomeEmail(
+	ctx context.Context,
+	payload *PayloadWelcomeEmail,
+	opts ...asynq.Option,
+) error {
+
+}
+
+// ProcessTaskSendResetPasswordEmail processes a 'TaskSendResetPasswordEmail' task.
+func (processor *RedisTaskProcessor) ProcessTaskSendResetPasswordEmail(
+	ctx context.Context,
+	task *asynq.Task,
+) error {
+	
+}
+
+
 // ProcessTaskSendResetPasswordEmail processes a 'TaskSendResetPasswordEmail' task.
 func (processor *RedisTaskProcessor) ProcessTaskSendResetPasswordEmail(
 	ctx context.Context,

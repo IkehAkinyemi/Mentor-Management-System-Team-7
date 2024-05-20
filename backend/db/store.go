@@ -113,10 +113,4 @@ type Store interface {
 
 	// DeleteCriteria deletes a criteria document from the collection by ID.
 	DeleteCriteria(ctx context.Context, criteriaID string) (*mongo.DeleteResult, error)
-
-
-
-
-
-	
 }
